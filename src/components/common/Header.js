@@ -20,6 +20,9 @@ class Header extends React.Component {
         <Navbar.Collapse>
           <Nav>
             <NavItem eventKey={ 1 } href={ path.APP } onClick={ () => navigate(path.APP) }>Home</NavItem>
+            <NavItem eventKey={ 2 } href={ path.EMPLOYEES } onClick={ () => navigate(path.EMPLOYEES) }>
+              Employee
+            </NavItem>
             <NavItem eventKey={ 3 } href={ path.ABOUT } onClick={ () => navigate(path.ABOUT) }>About</NavItem>
           </Nav>
           <Nav pullRight>

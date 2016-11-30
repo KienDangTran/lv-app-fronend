@@ -5,12 +5,15 @@ import { Router, browserHistory } from "react-router";
 import routes from "./routes";
 import configureStore from "./store/configureStore";
 import { syncHistoryWithStore } from "react-router-redux";
+import { loadEmployees } from "./actions/employee/employeeActions";
+
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "../node_modules/bootstrap/dist/js/bootstrap.min";
 import "./styles/styles.scss";
 require("./favicon.ico"); // Tell webpack to load favicon.ico
 
 const store = configureStore();
+store.dispatch(loadEmployees());
 
 // Create an enhanced history that syncs navigation events with the store
 const history = syncHistoryWithStore(browserHistory, store);
