@@ -26,8 +26,7 @@ class Header extends React.Component {
             <NavItem eventKey={ 3 } href={ path.ABOUT } onClick={ () => navigate(path.ABOUT) }>About</NavItem>
           </Nav>
           <Nav pullRight>
-            <NavItem href="#">Welcome, Admin!</NavItem>
-            <NavItem href="#"><Glyphicon glyph="user"/></NavItem>
+            <NavItem href="#">Welcome, Admin! <Glyphicon glyph="user"/></NavItem>
             <NavItem href="#"><Glyphicon glyph="log-out"/></NavItem>
           </Nav>
         </Navbar.Collapse>

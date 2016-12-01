@@ -10,6 +10,96 @@ const employees = [
     phone      : "01648172820",
     status     : "1",
     userId     : "U0000001"
+  },
+  {
+    code       : "EMP00001",
+    name       : "Employee 1",
+    dateOfBirth: "1991-09-12",
+    sex        : "1",
+    email      : "e1@example.com",
+    phone      : "01648172820",
+    status     : "1",
+    userId     : "U0000001"
+  },
+  {
+    code       : "EMP00001",
+    name       : "Employee 1",
+    dateOfBirth: "1991-09-12",
+    sex        : "1",
+    email      : "e1@example.com",
+    phone      : "01648172820",
+    status     : "1",
+    userId     : "U0000001"
+  },
+  {
+    code       : "EMP00001",
+    name       : "Employee 1",
+    dateOfBirth: "1991-09-12",
+    sex        : "1",
+    email      : "e1@example.com",
+    phone      : "01648172820",
+    status     : "1",
+    userId     : "U0000001"
+  },
+  {
+    code       : "EMP00001",
+    name       : "Employee 1",
+    dateOfBirth: "1991-09-12",
+    sex        : "1",
+    email      : "e1@example.com",
+    phone      : "01648172820",
+    status     : "1",
+    userId     : "U0000001"
+  },
+  {
+    code       : "EMP00001",
+    name       : "Employee 1",
+    dateOfBirth: "1991-09-12",
+    sex        : "1",
+    email      : "e1@example.com",
+    phone      : "01648172820",
+    status     : "1",
+    userId     : "U0000001"
+  },
+  {
+    code       : "EMP00001",
+    name       : "Employee 1",
+    dateOfBirth: "1991-09-12",
+    sex        : "1",
+    email      : "e1@example.com",
+    phone      : "01648172820",
+    status     : "1",
+    userId     : "U0000001"
+  },
+  {
+    code       : "EMP00001",
+    name       : "Employee 1",
+    dateOfBirth: "1991-09-12",
+    sex        : "1",
+    email      : "e1@example.com",
+    phone      : "01648172820",
+    status     : "1",
+    userId     : "U0000001"
+  },
+  {
+    code       : "EMP00001",
+    name       : "Employee 1",
+    dateOfBirth: "1991-09-12",
+    sex        : "1",
+    email      : "e1@example.com",
+    phone      : "01648172820",
+    status     : "1",
+    userId     : "U0000001"
+  },
+  {
+    code       : "EMP0000002",
+    name       : "Employee 2",
+    dateOfBirth: "",
+    sex        : "0",
+    email      : "e2@example.com",
+    phone      : "01648172820",
+    status     : "1",
+    userId     : "U0000001"
   }
 ];
 

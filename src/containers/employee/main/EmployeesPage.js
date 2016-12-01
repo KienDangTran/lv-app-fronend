@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { Panel } from "react-bootstrap";
 import * as employeeActions from "../../../actions/employee/employeeActions";
 import EmployeeList from "../../../components/employee/main/EmployeeList";
 // import { browserHistory } from "react-router";
@@ -18,10 +19,10 @@ class EmployeesPage extends React.Component {
 
   render() {
     return (
-      <div className="jumbotron">
-        <h1>Employees</h1>
+      <Panel>
+        <h2>Employees Summary</h2>
         <EmployeeList employees={ this.props.employees }/>
-      </div>
+      </Panel>
     );
   }
 }
