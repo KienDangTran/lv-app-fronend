@@ -20,13 +20,10 @@ class EmployeeDetailsPage extends React.Component {
 
   render() {
     return (
-      <div>
-        <h1>Employee Details</h1>
-        <EmployeeForm
-          employee={ this.state.employee }
-          helpText={ this.state.errors }
-          onChange={ this.onChange }/>
-      </div>
+      <EmployeeForm
+        employee={ this.state.employee }
+        helpText={ this.state.errors }
+        onChange={ this.onChange }/>
     );
   }
 }
