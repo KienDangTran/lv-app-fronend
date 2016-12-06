@@ -10,13 +10,9 @@ import EmployeeList from "../../../components/employee/main/EmployeeList";
 class EmployeeSummaryPage extends React.Component {
   constructor(props, context) {
     super(props, context);
-    this.state        = {
-      showModal : false,
-      activePage: 1
-    };
+    this.state        = { showModal: false, };
     this.openModal    = this.openModal.bind(this);
     this.closeModal   = this.closeModal.bind(this);
-    this.handleSelect = this.handleSelect.bind(this);
     // this.redirectToEmployeePage = this.redirectToEmployeePage().bind(this);
   }
 
@@ -30,10 +26,6 @@ class EmployeeSummaryPage extends React.Component {
 
   closeModal() {
     this.setState({ showModal: false });
-  }
-
-  handleSelect(eventKey) {
-    this.setState({ activePage: eventKey });
   }
 
   render() {
@@ -67,10 +59,10 @@ class EmployeeSummaryPage extends React.Component {
           last
           ellipsis
           boundaryLinks
-          items={ this.props.employees.length / 5 }
+          items={ 5 }
           maxButtons={ 5 }
-          activePage={ this.state.activePage }
-          onSelect={ this.handleSelect }
+          activePage={ 1 }
+          onSelect={ () => {} }
           className="pull-right"
         />
       </div>

@@ -1,8 +1,9 @@
 import React from "react";
 import { Link } from "react-router";
 import { Table, Glyphicon, Button } from "react-bootstrap";
+import * as path from "../../../constants/paths";
 
-const EmployeeList = ({employees, deleteRow}) => {
+const EmployeeList = ({ employees, deleteRow }) => {
   return (
     <Table responsive striped>
       <thead>
@@ -14,7 +15,7 @@ const EmployeeList = ({employees, deleteRow}) => {
       </thead>
       <tbody>
       {
-         employees.map((employee, index) => {
+        employees.map((employee, index) => {
           return (
             <tr key={ index }>
               <td>
@@ -23,7 +24,9 @@ const EmployeeList = ({employees, deleteRow}) => {
                   <Glyphicon glyph="trash"/>
                 </Button>
               </td>
-              <td><Link to={ `employee/${employee.code}` }>{ employee.code }</Link></td>
+              <td>
+                <Link to={`${path.EMPLOYEE}/${employee.code }`}>{ employee.code }</Link>
+              </td>
               <td>{ employee.name }</td>
             </tr>
           );

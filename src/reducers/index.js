@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import employees from "./employee/employeeReducer";
+import employees from "./employeeReducer";
 import { routerReducer } from "react-router-redux";
 
 const rootReducer = combineReducers(

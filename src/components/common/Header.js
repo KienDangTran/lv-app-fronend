@@ -34,9 +34,9 @@ class Header extends React.Component {
 
             <NavItem
               eventKey={ 2 }
-              href={ path.EMPLOYEES }
-              onClick={ () => navigate(path.EMPLOYEES) }
-              active={ isActive(path.EMPLOYEES) }
+              href={ path.EMPLOYEE }
+              onClick={ () => navigate(path.EMPLOYEE) }
+              active={ isActive(path.EMPLOYEE) }
             >
               Employee
             </NavItem>

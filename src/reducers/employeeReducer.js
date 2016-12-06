@@ -1,6 +1,6 @@
-import * as actionTypes from "../../actions/actionTypes";
+import * as actionTypes from "../actions/actionTypes";
 
-export default function employeeReducer(state = [], action) {
+const employeeReducer = (state = [], action) => {
   switch (action.type) {
     case actionTypes.LOAD_EMPLOYEES_SUCCESS:
       return action.employees;
@@ -9,4 +9,6 @@ export default function employeeReducer(state = [], action) {
     default:
       return state;
   }
-}
+};
+
+export default employeeReducer;
