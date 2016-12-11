@@ -27,9 +27,9 @@ const pagination = combineReducers({
 
 const rootReducer = combineReducers(
   {
-    routing,
     entities,
-    pagination
+    pagination,
+    routing
   }
 );
 

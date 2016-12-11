@@ -1,3 +1,8 @@
 export default {
-  employees: []
+  entities  : {
+    employees: {}
+  },
+  pagination: {
+    employeePage: {}
+  }
 };
