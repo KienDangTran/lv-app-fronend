@@ -65,7 +65,7 @@ const paginate = ({ types, mapActionToKey }) => {
           [key]: updatePagination(state[key], action)
         };
       default:
-        return;
+        return state;
     }
   };
 };

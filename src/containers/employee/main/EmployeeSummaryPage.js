@@ -1,11 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import { loadEmployees } from "../../../actions/employee/employeeActions";
 import { PageHeader, Modal, Glyphicon, ButtonToolbar, Button, Pagination } from "react-bootstrap";
-import * as employeeActions from "../../../actions/employee/employeeActions";
 import EmployeeList from "../../../components/employee/main/EmployeeList";
-// import { browserHistory } from "react-router";
-// import * as Paths from "../../constants/paths";
 
 const loadData = ({ loadEmployees }) => {
   loadEmployees();
@@ -17,7 +14,6 @@ class EmployeeSummaryPage extends React.Component {
     this.state      = { showModal: false, };
     this.openModal  = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
-    // this.redirectToEmployeePage = this.redirectToEmployeePage().bind(this);
   }
 
   componentWillMount() {
@@ -28,10 +24,6 @@ class EmployeeSummaryPage extends React.Component {
     loadData(nextProps);
   }
 
-  // redirectToEmployeePage() {
-  //   browserHistory.push(Paths.EMPLOYEE_DETAILS);
-  // }
-
   openModal() {
     this.setState({ showModal: true });
   }
@@ -41,11 +33,12 @@ class EmployeeSummaryPage extends React.Component {
   }
 
   render() {
+
     return (
       <div>
         <PageHeader>Employee Summary</PageHeader>
 
-        <EmployeeList employees={ this.props.employees } deleteRow={ this.openModal }/>
+        <EmployeeList employees={ Object.values(this.props.employees) } deleteRow={ this.openModal }/>
         <Modal
           show={ this.state.showModal }
           onHide={ this.closeModal }
@@ -65,13 +58,13 @@ class EmployeeSummaryPage extends React.Component {
         </Modal>
 
         <Pagination
-          prev
-          next
-          first
-          last
+          prev={ this.props.employeePagination.pageCount > 0 }
+          next={ this.props.employeePagination.pageCount > 0 && !this.props.employeePagination.nextPageUrl }
+          first={ this.props.employeePagination.pageCount > 0 }
+          last={ this.props.employeePagination.pageCount > 0 }
           ellipsis
           boundaryLinks
-          items={ 5 }
+          items={ this.props.employeePagination.pageCount }
           maxButtons={ 5 }
           activePage={ 1 }
           onSelect={ () => {} }
@@ -83,21 +76,25 @@ class EmployeeSummaryPage extends React.Component {
 }
 
 EmployeeSummaryPage.propTypes = {
-  employees    : React.PropTypes.object,
-  loadEmployees: React.PropTypes.func.isRequired
+  employeePagination: React.PropTypes.object,
+  employees         : React.PropTypes.object,
+  loadEmployees     : React.PropTypes.func.isRequired
+};
+
+EmployeeSummaryPage.defaultProps = {
+  employeePagination: { ids: [] },
+  employees         : {},
 };
 
 function mapStateToProps(state) {
-  const {
-          pagination: { employeePage },
-          entities: { employees }
-        }                  = state;
-  const employeePagination = employeePage || { ids: [] };
-  return employees;
+  return {
+    employeePagination: state.pagination.employeePage || { ids: [] },
+    employees         : state.entities.employees
+  };
 }
 
-function mapDispatchToProps(dispatch) {
-  return { actions: bindActionCreators(employeeActions, dispatch) };
+function mapDispatchToProps() {
+  return { loadEmployees };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EmployeeSummaryPage);

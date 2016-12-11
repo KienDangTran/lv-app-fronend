@@ -23,7 +23,6 @@ const fetchEmployees = (nextPageUrl) => {
 export function loadEmployees(nextPage) {
   return (dispatch, getState) => {
     const { nextPageUrl = api.EMPLOYEE, pageCount = 0 } = getState().pagination.employeePage || {};
-
     if (pageCount > 0 && !nextPage) {
       return null;
     }
