@@ -1,0 +1,10 @@
+/* Pagination */
+export const CALL_API     = "CALL_API";
+export const REQUEST_PAGE = "REQUEST_PAGE";
+export const RECEIVE_PAGE = "RECEIVE_PAGE";
+
+/* Employee */
+export const FETCH_EMPLOYEES_REQUEST = "FETCH_EMPLOYEES_REQUEST";
+export const FETCH_EMPLOYEES_SUCCESS = "FETCH_EMPLOYEES_SUCCESS";
+export const FETCH_EMPLOYEES_FAILURE = "FETCH_EMPLOYEES_FAILURE";
+// export const CREATE_EMPLOYEE         = "CREATE_EMPLOYEE";

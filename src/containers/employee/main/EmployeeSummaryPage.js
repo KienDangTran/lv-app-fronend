@@ -7,13 +7,25 @@ import EmployeeList from "../../../components/employee/main/EmployeeList";
 // import { browserHistory } from "react-router";
 // import * as Paths from "../../constants/paths";
 
+const loadData = ({ loadEmployees }) => {
+  loadEmployees();
+};
+
 class EmployeeSummaryPage extends React.Component {
   constructor(props, context) {
     super(props, context);
-    this.state        = { showModal: false, };
-    this.openModal    = this.openModal.bind(this);
-    this.closeModal   = this.closeModal.bind(this);
+    this.state      = { showModal: false, };
+    this.openModal  = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
     // this.redirectToEmployeePage = this.redirectToEmployeePage().bind(this);
+  }
+
+  componentWillMount() {
+    loadData(this.props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    loadData(nextProps);
   }
 
   // redirectToEmployeePage() {
@@ -71,12 +83,17 @@ class EmployeeSummaryPage extends React.Component {
 }
 
 EmployeeSummaryPage.propTypes = {
-  employees: React.PropTypes.array.isRequired,
-  actions  : React.PropTypes.object.isRequired
+  employees    : React.PropTypes.object,
+  loadEmployees: React.PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
-  return { employees: state.employees };
+  const {
+          pagination: { employeePage },
+          entities: { employees }
+        }                  = state;
+  const employeePagination = employeePage || { ids: [] };
+  return employees;
 }
 
 function mapDispatchToProps(dispatch) {

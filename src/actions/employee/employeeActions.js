@@ -1,18 +1,34 @@
-import * as actionTypes from "../actionTypes";
-import EmployeeApi from "../../../mock-api/employee/employeeMockApi";
+import * as actionTypes from "../../constants/actionTypes";
+import * as schemas from "../../constants/schemes";
+import * as api from "../../constants/api";
 
-export function loadEmployeesSuccess(employees) {
-  return { type: actionTypes.LOAD_EMPLOYEES_SUCCESS, employees };
-}
-
-export function loadEmployees() {
-  return (dispatch) => {
-    return EmployeeApi.getEmployees().then(employees => {
-      dispatch(loadEmployeesSuccess(employees));
-    });
+/**
+ * Fetches a page of employee. Relies on the custom API middleware defined in ../middleware/api.js.
+ * @returns {{}}
+ */
+const fetchEmployees = (nextPageUrl) => {
+  return {
+    [actionTypes.CALL_API]: {
+      types   : [
+        actionTypes.FETCH_EMPLOYEES_REQUEST,
+        actionTypes.FETCH_EMPLOYEES_SUCCESS,
+        actionTypes.FETCH_EMPLOYEES_FAILURE
+      ],
+      endpoint: nextPageUrl,
+      schema  : schemas.EMPLOYEE
+    }
   };
-}
+};
 
-export function createEmployee(employee) {
-  return { type: actionTypes.CREATE_EMPLOYEE, employee };
+export function loadEmployees(nextPage) {
+  return (dispatch, getState) => {
+    const { nextPageUrl = api.EMPLOYEE, pageCount = 0 } = getState().pagination.employeePage || {};
+
+    if (pageCount > 0 && !nextPage) {
+      return null;
+    }
+    return () => {
+      dispatch(fetchEmployees(nextPageUrl));
+    };
+  };
 }
