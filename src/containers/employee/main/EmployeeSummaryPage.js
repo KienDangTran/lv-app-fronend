@@ -4,10 +4,6 @@ import { loadEmployees } from "../../../actions/employee/employeeActions";
 import { PageHeader, Modal, Glyphicon, ButtonToolbar, Button, Pagination } from "react-bootstrap";
 import EmployeeList from "../../../components/employee/main/EmployeeList";
 
-const loadData = ({ loadEmployees }) => {
-  loadEmployees();
-};
-
 class EmployeeSummaryPage extends React.Component {
   constructor(props, context) {
     super(props, context);
@@ -16,12 +12,9 @@ class EmployeeSummaryPage extends React.Component {
     this.closeModal = this.closeModal.bind(this);
   }
 
-  componentWillMount() {
-    loadData(this.props);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    loadData(nextProps);
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch(loadEmployees());
   }
 
   openModal() {
@@ -78,23 +71,16 @@ class EmployeeSummaryPage extends React.Component {
 EmployeeSummaryPage.propTypes = {
   employeePagination: React.PropTypes.object,
   employees         : React.PropTypes.object,
-  loadEmployees     : React.PropTypes.func.isRequired
-};
-
-EmployeeSummaryPage.defaultProps = {
-  employeePagination: { ids: [] },
-  employees         : {},
+  fetching          : React.PropTypes.bool,
+  dispatch          : React.PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
   return {
-    employeePagination: state.pagination.employeePage || { ids: [] },
-    employees         : state.entities.employees
+    employeePagination: state.paginations.pages || { ids: [] },
+    employees         : state.employees,
+    fetching          : state.paginations.fetching
   };
 }
 
-function mapDispatchToProps() {
-  return { loadEmployees };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(EmployeeSummaryPage);
+export default connect(mapStateToProps)(EmployeeSummaryPage);

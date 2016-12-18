@@ -104,10 +104,10 @@ const employees = [
 ];
 
 class EmployeeApi {
-  static getEmployees(pageNo = 1, pageSize = 10) {
+  static getEmployees(page = 1, pageSize = 5) {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve(Object.assign([], employees.slice((pageNo - 1) * pageSize, pageSize - 1)));
+        resolve(Object.assign([], employees.slice((page - 1) * pageSize, pageSize)));
       }, DELAY);
     });
   }

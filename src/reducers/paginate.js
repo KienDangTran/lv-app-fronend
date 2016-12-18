@@ -52,7 +52,6 @@ const paginate = ({ types, mapActionToKey }) => {
 
   return (state = {}, action) => {
     // Update pagination by key
-    debugger;
     switch (action.type) {
       case requestType:
       case successType:
