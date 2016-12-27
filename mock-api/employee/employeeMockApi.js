@@ -104,30 +104,45 @@ const employees = [
 ];
 
 class EmployeeApi {
-  static getEmployees(page = 1, pageSize = 5) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(Object.assign([], employees.slice((page - 1) * pageSize, pageSize)));
-      }, DELAY);
-    });
+  static getEmployees(pageNo = 1, pageSize = 5) {
+    return new Promise(
+      (resolve) => {
+        setTimeout(
+          () => {
+            resolve(
+              {
+                employees: employees.slice((pageNo - 1) * pageSize, pageSize * pageNo),
+                pageNo,
+                pageSize,
+                pageCount: employees.length / pageSize + (employees.length % pageSize === 0 ? 0 : 1)
+              }
+            );
+          }, DELAY
+        );
+      }
+    );
   }
 
   static saveEmployee(employee) {
     employee = Object.assign({}, employee);
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (employee.name.length < 3) {
-          reject("Employee Name must be at least than 3 characters");
-        }
+    return new Promise(
+      (resolve, reject) => {
+        setTimeout(
+          () => {
+            if (employee.name.length < 3) {
+              reject("Employee Name must be at least than 3 characters");
+            }
 
-        if (employee.code) {
-          const existingEmployeeIndex = employees.findIndex(e => e.code === employee.code);
-          employees.splice(existingEmployeeIndex, 1, employee);
-        }
+            if (employee.code) {
+              const existingEmployeeIndex = employees.findIndex(e => e.code === employee.code);
+              employees.splice(existingEmployeeIndex, 1, employee);
+            }
 
-        resolve(employee);
-      }, DELAY);
-    });
+            resolve(employee);
+          }, DELAY
+        );
+      }
+    );
   }
 }
 

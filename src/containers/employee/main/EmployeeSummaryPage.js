@@ -1,20 +1,30 @@
 import React from "react";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { loadEmployees } from "../../../actions/employee/employeeActions";
-import { PageHeader, Modal, Glyphicon, ButtonToolbar, Button, Pagination } from "react-bootstrap";
+import * as employeeActions from "../../../actions/employee/employeeActions";
+import {
+  PageHeader,
+  Modal,
+  Glyphicon,
+  ButtonToolbar,
+  Button,
+  Pagination,
+  DropdownButton,
+  MenuItem
+} from "react-bootstrap";
 import EmployeeList from "../../../components/employee/main/EmployeeList";
 
 class EmployeeSummaryPage extends React.Component {
   constructor(props, context) {
     super(props, context);
-    this.state      = { showModal: false, };
+    this.state      = { showModal: false };
     this.openModal  = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.moveToPage = this.moveToPage.bind(this);
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch(loadEmployees());
+    this.props.actions.loadEmployees(this.props.pagination.currentPage, this.props.pagination.pageSize);
   }
 
   openModal() {
@@ -25,62 +35,99 @@ class EmployeeSummaryPage extends React.Component {
     this.setState({ showModal: false });
   }
 
+  moveToPage(pageNo) {
+    this.props.actions.loadEmployees(pageNo, this.props.pagination.pageSize);
+  }
+
   render() {
+    const deleteDialog = (
+      <Modal
+        show={ this.state.showModal }
+        onHide={ this.closeModal }
+        container={ this }
+        aria-labelledby="contained-modal-title"
+      >
+        <Modal.Header className="alert alert-warning">
+          <Modal.Title><Glyphicon glyph="warning-sign"/> Warning!!!</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <h4>Do you really want to delete this employee?</h4>
+          <ButtonToolbar>
+            <Button bsStyle="primary" onClick={ this.closeModal }>Yes</Button>
+            <Button onClick={ this.closeModal }>No</Button>
+          </ButtonToolbar>
+        </Modal.Body>
+      </Modal>
+    );
+
+    const currentPage      = this.props.pagination.currentPage;
+    const pageSize         = this.props.pagination.pageSize;
+    const pageSizeValues   = [5, 10, 25, 50];
+    const selectPageSize   = (eventKey) => this.props.actions.loadEmployees(
+      currentPage,
+      pageSizeValues[eventKey]
+    );
+    const pageSizeSelector = (
+      <div>
+        Items per page:
+        <DropdownButton id="pageSizeSelection" title={ pageSize } bsStyle="link" onSelect={ selectPageSize }>
+          {
+            pageSizeValues.map((value, index) => <MenuItem key={index} eventKey={ index }>{ value }</MenuItem>)
+          }
+        </DropdownButton>
+      </div>
+    );
+
+    const pageCount  = this.props.pagination.pageCount;
+    const pagination = (
+      <Pagination
+        first={ pageCount > 1 && currentPage > 1 }
+        prev={ pageCount > 1 && currentPage > 1 }
+        next={ pageCount > 1 && currentPage < pageCount }
+        last={ pageCount > 1 && currentPage < pageCount }
+        ellipsis
+        items={ pageCount }
+        maxButtons={ 10 }
+        activePage={ currentPage }
+        onSelect={ this.moveToPage }
+        className="pull-right"
+      />
+    );
 
     return (
       <div>
         <PageHeader>Employee Summary</PageHeader>
-
-        <EmployeeList employees={ Object.values(this.props.employees) } deleteRow={ this.openModal }/>
-        <Modal
-          show={ this.state.showModal }
-          onHide={ this.closeModal }
-          container={ this }
-          aria-labelledby="contained-modal-title"
-        >
-          <Modal.Header className="alert alert-warning">
-            <Modal.Title><Glyphicon glyph="warning-sign"/> Warning!!!</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <h4>Do you really want to delete this employee?</h4>
-            <ButtonToolbar>
-              <Button bsStyle="primary" onClick={ this.closeModal }>Yes</Button>
-              <Button onClick={ this.closeModal }>No</Button>
-            </ButtonToolbar>
-          </Modal.Body>
-        </Modal>
-
-        <Pagination
-          prev={ this.props.employeePagination.pageCount > 0 }
-          next={ this.props.employeePagination.pageCount > 0 && !this.props.employeePagination.nextPageUrl }
-          first={ this.props.employeePagination.pageCount > 0 }
-          last={ this.props.employeePagination.pageCount > 0 }
-          ellipsis
-          boundaryLinks
-          items={ this.props.employeePagination.pageCount }
-          maxButtons={ 5 }
-          activePage={ 1 }
-          onSelect={ () => {} }
-          className="pull-right"
-        />
+        { pageSizeSelector }
+        <EmployeeList employees={ this.props.employees } deleteRow={ this.openModal }/>
+        { deleteDialog }
+        { pagination }
       </div>
     );
   }
 }
 
 EmployeeSummaryPage.propTypes = {
-  employeePagination: React.PropTypes.object,
-  employees         : React.PropTypes.object,
-  fetching          : React.PropTypes.bool,
-  dispatch          : React.PropTypes.func.isRequired
+  actions   : React.PropTypes.object.isRequired,
+  pagination: React.PropTypes.object,
+  employees : React.PropTypes.array,
 };
 
-function mapStateToProps(state) {
-  return {
-    employeePagination: state.paginations.pages || { ids: [] },
-    employees         : state.employees,
-    fetching          : state.paginations.fetching
-  };
-}
+const mapStateToProps = (state) => {
+  const {
+          employees,
+          pagination: { pages, currentPage, pageSize, pageCount }
+        } = state;
 
-export default connect(mapStateToProps)(EmployeeSummaryPage);
+  return {
+    pagination: { pages, currentPage, pageSize, pageCount },
+    employees : pages[currentPage].ids.map(id => employees[id]),
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    actions: bindActionCreators(employeeActions, dispatch)
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EmployeeSummaryPage);
