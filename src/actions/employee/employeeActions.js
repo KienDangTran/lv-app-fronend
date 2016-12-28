@@ -34,16 +34,15 @@ const fetchEmployees = (pageNo, pageSize) => {
 
 export const loadEmployees = (pageNo, pageSize) => {
   return (dispatch, getState) => {
-    if (
-      pageNo
-      && pageSize
-      && getState().pagination.pages[pageNo]
-      && getState().pagination.pages[pageNo].ids.length > 0
-      && pageSize === getState().pagination.pageSize
-    ) {
-      dispatch(receiveEmployees(pageNo, pageSize));
-      return null;
-    }
+    // if (
+    //   pageNo
+    //   && pageSize
+    //   && getState().pagination.pages[pageNo]
+    //   && getState().pagination.pages[pageNo].ids.length > 0
+    //   && pageSize === getState().pagination.pageSize
+    // ) {
+    //   return null;
+    // }
 
     if (!getState().pagination.fetching) {
       return dispatch(fetchEmployees(pageNo, pageSize));

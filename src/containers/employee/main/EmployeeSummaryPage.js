@@ -24,7 +24,7 @@ class EmployeeSummaryPage extends React.Component {
   }
 
   componentDidMount() {
-    this.props.actions.loadEmployees(this.props.pagination.currentPage, this.props.pagination.pageSize);
+    this.props.actions.loadEmployees(this.props.employeePagination.currentPage, this.props.employeePagination.pageSize);
   }
 
   openModal() {
@@ -36,7 +36,7 @@ class EmployeeSummaryPage extends React.Component {
   }
 
   moveToPage(pageNo) {
-    this.props.actions.loadEmployees(pageNo, this.props.pagination.pageSize);
+    this.props.actions.loadEmployees(pageNo, this.props.employeePagination.pageSize);
   }
 
   render() {
@@ -60,8 +60,8 @@ class EmployeeSummaryPage extends React.Component {
       </Modal>
     );
 
-    const currentPage      = this.props.pagination.currentPage;
-    const pageSize         = this.props.pagination.pageSize;
+    const currentPage      = this.props.employeePagination.currentPage;
+    const pageSize         = this.props.employeePagination.pageSize;
     const pageSizeValues   = [5, 10, 25, 50];
     const selectPageSize   = (eventKey) => this.props.actions.loadEmployees(
       currentPage,
@@ -78,7 +78,7 @@ class EmployeeSummaryPage extends React.Component {
       </div>
     );
 
-    const pageCount  = this.props.pagination.pageCount;
+    const pageCount  = this.props.employeePagination.pageCount;
     const pagination = (
       <Pagination
         first={ pageCount > 1 && currentPage > 1 }
@@ -107,20 +107,20 @@ class EmployeeSummaryPage extends React.Component {
 }
 
 EmployeeSummaryPage.propTypes = {
-  actions   : React.PropTypes.object.isRequired,
-  pagination: React.PropTypes.object,
-  employees : React.PropTypes.array,
+  actions           : React.PropTypes.object.isRequired,
+  employeePagination: React.PropTypes.object,
+  employees         : React.PropTypes.array,
 };
 
 const mapStateToProps = (state) => {
   const {
-          employees,
-          pagination: { pages, currentPage, pageSize, pageCount }
+          entities: { employees },
+          pagination: { employeePagination }
         } = state;
 
   return {
-    pagination: { pages, currentPage, pageSize, pageCount },
-    employees : pages[currentPage].ids.map(id => employees[id]),
+    employeePagination: employeePagination,
+    employees         : employeePagination.pages[employeePagination.currentPage].ids.map(id => employees[id]),
   };
 };
 
