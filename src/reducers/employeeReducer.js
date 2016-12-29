@@ -1,6 +1,7 @@
 import { combineReducers } from "redux";
 import initialState from "./initialState";
 import * as actionTypes from "../constants/actionTypes";
+// import { uuid } from "../utils/utils";
 
 const employees = (
   employees = initialState.entities.employees,
@@ -49,7 +50,7 @@ const currentPage = (
   currentPage = initialState.pagination.employeePagination.currentPage,
   action = {}
 ) => {
-  return action.type === actionTypes.REQUEST_EMPLOYEES && action.payload.pageNo
+  return action.type === actionTypes.RECEIVE_EMPLOYEES && action.payload.pageNo
     ? action.payload.pageNo
     : currentPage;
 };

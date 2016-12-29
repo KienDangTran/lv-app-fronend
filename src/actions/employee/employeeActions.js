@@ -32,20 +32,53 @@ const fetchEmployees = (pageNo, pageSize) => {
   };
 };
 
+const shouldFetchEmployees = (state, pageNo, pageSize) => {
+  const employeePagination = state.pagination.employeePagination;
+  if (!employeePagination) {
+    return true;
+  }
+  if (employeePagination.pageSize !== pageSize) {
+    return true;
+  }
+  if (!employeePagination.pages) {
+    return true;
+  }
+  if (!employeePagination.pages[pageNo]) {
+    return true;
+  }
+
+  if (employeePagination.pages[pageNo].isFetching) {
+    return false;
+  }
+
+  if (employeePagination.pages[pageNo].isFetching
+    || !employeePagination.pages[pageNo].ids
+    || employeePagination.pages[pageNo].ids.length === 0) {
+    return true;
+  }
+
+  return false;
+};
+
 export const loadEmployees = (pageNo, pageSize) => {
   return (dispatch, getState) => {
-    // if (
-    //   pageNo
-    //   && pageSize
-    //   && getState().pagination.pages[pageNo]
-    //   && getState().pagination.pages[pageNo].ids.length > 0
-    //   && pageSize === getState().pagination.pageSize
-    // ) {
-    //   return null;
-    // }
-
-    if (!getState().pagination.fetching) {
+    if (shouldFetchEmployees(getState(), pageNo, pageSize)) {
+      console.log(`fetching ${pageSize} items of page ${pageNo}`);
       return dispatch(fetchEmployees(pageNo, pageSize));
+    }
+    else {
+      const {
+              entities: { employees },
+              pagination: { employeePagination }
+            } = getState();
+      return dispatch(
+        receiveEmployees(
+          pageNo,
+          pageSize,
+          getState().pagination.employeePagination.pageCount,
+          employeePagination.pages[pageNo].ids.map(id => employees[id])
+        )
+      );
     }
   };
 };

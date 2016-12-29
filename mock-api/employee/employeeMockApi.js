@@ -1,5 +1,3 @@
-import { DELAY } from "../delay";
-
 const employees = [
   {
     code       : "EMP00001",
@@ -206,9 +204,27 @@ const employees = [
 class EmployeeApi {
   static getEmployees(pageNo = 1, pageSize = 5) {
     return new Promise(
-      (resolve) => {
+      (resolve, reject) => {
         setTimeout(
           () => {
+            if (pageNo === 2 && pageSize === 5) {
+              reject(
+                {
+                  error : "404 - Not found",
+                  status: 404
+                }
+              );
+            }
+
+            if (pageNo === 3 && pageSize === 10) {
+              reject(
+                {
+                  error : "Request time out",
+                  status: 500
+                }
+              );
+            }
+
             resolve(
               {
                 employees: employees.slice((pageNo - 1) * pageSize, pageSize * pageNo),
@@ -217,7 +233,7 @@ class EmployeeApi {
                 pageCount: employees.length / pageSize + (employees.length % pageSize === 0 ? 0 : 1)
               }
             );
-          }, DELAY
+          }, Math.random() * 2000 + 1000
         );
       }
     );
@@ -239,7 +255,7 @@ class EmployeeApi {
             }
 
             resolve(employee);
-          }, DELAY
+          }, Math.random() * 2000 + 1000
         );
       }
     );
