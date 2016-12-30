@@ -10,7 +10,8 @@ export default {
       pages      : {
         1: {
           ids     : [],
-          fetching: false
+          fetching: false,
+          error   : {}
         }
       }
     }

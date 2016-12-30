@@ -77,127 +77,147 @@ const employees = [
     email      : "e9@example.com",
     phone      : "01648172820",
     status     : "0",
-    userId     : "U0000009"
+    userId     : "U0000008"
   },
   {
-    code       : "EMP00010",
-    name       : "Employee 10",
+    code       : "EMP0009",
+    name       : "Employee 9",
     dateOfBirth: "1991-09-12",
     sex        : "2",
     email      : "e10@example.com",
     phone      : "01648172820",
     status     : "1",
-    userId     : "U0000010"
+    userId     : "U0000009"
   },
   {
-    code       : "EMP0000002",
+    code       : "EMP00010",
     name       : "Employee 200",
     dateOfBirth: "",
     sex        : "0",
     email      : "e200@example.com",
     phone      : "01648172820",
     status     : "1",
-    userId     : "U000000200"
+    userId     : "U0000010"
   },
   {
-    code       : "EMP00001",
+    code       : "EMP00011",
     name       : "Employee 1",
     dateOfBirth: "1991-09-12",
     sex        : "1",
     email      : "e1@example.com",
     phone      : "01648172820",
     status     : "1",
-    userId     : "U0000001"
+    userId     : "U0000011"
   },
   {
-    code       : "EMP00002",
+    code       : "EMP00012",
     name       : "Employee 2",
     dateOfBirth: "1991-09-12",
     sex        : "1",
     email      : "e2@example.com",
     phone      : "01648172820",
     status     : "1",
-    userId     : "U0000002"
+    userId     : "U0000012"
   },
   {
-    code       : "EMP00003",
+    code       : "EMP00013",
     name       : "Employee 3",
     dateOfBirth: "1991-09-12",
     sex        : "1",
     email      : "e3@example.com",
     phone      : "01648172820",
     status     : "0",
-    userId     : "U0000003"
+    userId     : "U0000013"
   },
   {
-    code       : "EMP00004",
+    code       : "EMP00014",
     name       : "Employee 4",
     dateOfBirth: "1991-09-12",
     sex        : "0",
     email      : "e4@example.com",
     phone      : "01648172820",
     status     : "1",
-    userId     : "U0000004"
+    userId     : "U0000014"
   },
   {
-    code       : "EMP00005",
+    code       : "EMP00015",
     name       : "Employee 5",
     dateOfBirth: "1991-09-12",
     sex        : "2",
     email      : "e5@example.com",
     phone      : "01648172820",
     status     : "1",
-    userId     : "U0000005"
+    userId     : "U0000015"
   },
   {
-    code       : "EMP00006",
+    code       : "EMP00016",
     name       : "Employee 6",
     dateOfBirth: "1991-09-12",
     sex        : "1",
     email      : "e6@example.com",
     phone      : "01648172820",
     status     : "1",
-    userId     : "U0000006"
+    userId     : "U0000016"
   },
   {
-    code       : "EMP00007",
+    code       : "EMP00017",
     name       : "Employee 7",
     dateOfBirth: "1991-09-12",
     sex        : "1",
     email      : "e7@example.com",
     phone      : "01648172820",
     status     : "1",
-    userId     : "U0000007"
+    userId     : "U0000017"
   },
   {
-    code       : "EMP00008",
+    code       : "EMP00018",
     name       : "Employee 8",
     dateOfBirth: "1991-09-12",
     sex        : "1",
     email      : "e9@example.com",
     phone      : "01648172820",
     status     : "0",
-    userId     : "U0000009"
+    userId     : "U0000018"
   },
   {
-    code       : "EMP00010",
+    code       : "EMP00019",
     name       : "Employee 10",
     dateOfBirth: "1991-09-12",
     sex        : "2",
     email      : "e10@example.com",
     phone      : "01648172820",
     status     : "1",
-    userId     : "U0000010"
+    userId     : "U0000019"
   },
   {
-    code       : "EMP0000002",
+    code       : "EMP000020",
     name       : "Employee 200",
     dateOfBirth: "",
     sex        : "0",
     email      : "e200@example.com",
     phone      : "01648172820",
     status     : "1",
-    userId     : "U000000200"
+    userId     : "U00000020"
+  },
+  {
+    code       : "EMP000022",
+    name       : "Employee 200",
+    dateOfBirth: "",
+    sex        : "0",
+    email      : "e200@example.com",
+    phone      : "01648172820",
+    status     : "1",
+    userId     : "U00000022"
+  },
+  {
+    code       : "EMP000021",
+    name       : "Employee 200",
+    dateOfBirth: "",
+    sex        : "0",
+    email      : "e200@example.com",
+    phone      : "01648172820",
+    status     : "1",
+    userId     : "U00000021"
   }
 ];
 
@@ -207,10 +227,10 @@ class EmployeeApi {
       (resolve, reject) => {
         setTimeout(
           () => {
-            if (pageNo === 2 && pageSize === 5) {
+            if (pageNo === 3 && pageSize === 10) {
               reject(
                 {
-                  error : "404 - Not found",
+                  message : "Not found",
                   status: 404
                 }
               );
@@ -219,7 +239,7 @@ class EmployeeApi {
             if (pageNo === 3 && pageSize === 10) {
               reject(
                 {
-                  error : "Request time out",
+                  message : "Request time out",
                   status: 500
                 }
               );
@@ -230,7 +250,7 @@ class EmployeeApi {
                 employees: employees.slice((pageNo - 1) * pageSize, pageSize * pageNo),
                 pageNo,
                 pageSize,
-                pageCount: employees.length / pageSize + (employees.length % pageSize === 0 ? 0 : 1)
+                pageCount: Math.ceil(employees.length / pageSize)
               }
             );
           }, Math.random() * 2000 + 1000

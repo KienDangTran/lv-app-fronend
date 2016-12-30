@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router";
 import { Table, Glyphicon, Button } from "react-bootstrap";
-import * as path from "../../../constants/paths";
+import * as path from "../../constants/paths";
 
 const EmployeeList = ({ employees, deleteRow }) => {
   return (

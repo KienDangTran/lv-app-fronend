@@ -1,7 +1,9 @@
 import React from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import * as employeeActions from "../../../actions/employee/employeeActions";
+import * as employeeActions from "../../actions/employee/employeeActions";
+import EmployeeList from "../../components/employee/EmployeeList";
+import { addLocationSearchVariable } from "../../utils/utils";
 import {
   PageHeader,
   Modal,
@@ -12,38 +14,32 @@ import {
   DropdownButton,
   MenuItem
 } from "react-bootstrap";
-import EmployeeList from "../../../components/employee/main/EmployeeList";
 
 class EmployeeSummaryPage extends React.Component {
   constructor(props, context) {
     super(props, context);
-    this.state      = { showModal: false };
-    this.openModal  = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
-    this.moveToPage = this.moveToPage.bind(this);
+    this.state         = { showModal: false };
+    this.loadEmployees = this.loadEmployees.bind(this);
   }
 
   componentDidMount() {
     this.props.actions.loadEmployees(this.props.employeePagination.currentPage, this.props.employeePagination.pageSize);
   }
 
-  openModal() {
-    this.setState({ showModal: true });
-  }
-
-  closeModal() {
-    this.setState({ showModal: false });
-  }
-
-  moveToPage(pageNo) {
-    this.props.actions.loadEmployees(pageNo, this.props.employeePagination.pageSize);
+  loadEmployees(pageNo, pageSize) {
+    addLocationSearchVariable("page",pageNo);
+    this.props.actions.loadEmployees(pageNo, pageSize);
   }
 
   render() {
-    const deleteDialog = (
+    const openDeleteDialog   = () => { this.setState({ showModal: true }); };
+    const deleteDialogAction = () => {
+      this.setState({ showModal: false });
+    };
+    const deleteDialog       = (
       <Modal
         show={ this.state.showModal }
-        onHide={ this.closeModal }
+        onHide={ deleteDialogAction }
         container={ this }
         aria-labelledby="contained-modal-title"
       >
@@ -53,8 +49,8 @@ class EmployeeSummaryPage extends React.Component {
         <Modal.Body>
           <h4>Do you really want to delete this employee?</h4>
           <ButtonToolbar>
-            <Button bsStyle="primary" onClick={ this.closeModal }>Yes</Button>
-            <Button onClick={ this.closeModal }>No</Button>
+            <Button bsStyle="primary" onClick={ deleteDialogAction }>Yes</Button>
+            <Button onClick={ deleteDialogAction }>No</Button>
           </ButtonToolbar>
         </Modal.Body>
       </Modal>
@@ -63,14 +59,14 @@ class EmployeeSummaryPage extends React.Component {
     const currentPage      = this.props.employeePagination.currentPage;
     const pageSize         = this.props.employeePagination.pageSize;
     const pageSizeValues   = [5, 10, 25, 50];
-    const selectPageSize   = (eventKey) => this.props.actions.loadEmployees(
-      currentPage,
-      pageSizeValues[eventKey]
-    );
     const pageSizeSelector = (
       <div>
         Items per page:
-        <DropdownButton id="pageSizeSelection" title={ pageSize } bsStyle="link" onSelect={ selectPageSize }>
+        <DropdownButton id="pageSizeSelection"
+                        title={ pageSize }
+                        bsStyle="link"
+                        onSelect={ (e) => this.loadEmployees(currentPage, pageSizeValues[e]) }
+        >
           {
             pageSizeValues.map((value, index) => <MenuItem key={index} eventKey={ index }>{ value }</MenuItem>)
           }
@@ -89,7 +85,7 @@ class EmployeeSummaryPage extends React.Component {
         items={ pageCount }
         maxButtons={ 10 }
         activePage={ currentPage }
-        onSelect={ this.moveToPage }
+        onSelect={ (e) => this.loadEmployees(e, pageSize) }
         className="pull-right"
       />
     );
@@ -98,7 +94,7 @@ class EmployeeSummaryPage extends React.Component {
       <div>
         <PageHeader>Employee Summary</PageHeader>
         { pageSizeSelector }
-        <EmployeeList employees={ this.props.employees } deleteRow={ this.openModal }/>
+        <EmployeeList employees={ this.props.employees } deleteRow={ openDeleteDialog }/>
         { deleteDialog }
         { pagination }
       </div>

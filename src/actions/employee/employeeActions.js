@@ -1,34 +1,57 @@
-import * as actionTypes from "../../constants/actionTypes";
 import EmployeeApi from "../../../mock-api/employee/employeeMockApi";
+
+export const types = {
+  EMPLOYEES_REQUEST: "EMPLOYEES_REQUEST",
+  EMPLOYEES_SUCCESS: "EMPLOYEES_SUCCESS",
+  EMPLOYEES_FAILURE: "EMPLOYEES_FAILURE",
+};
 
 const requestEmployees = (pageNo, pageSize) => {
   return {
-    type   : actionTypes.REQUEST_EMPLOYEES,
+    type   : types.EMPLOYEES_REQUEST,
     payload: { pageNo, pageSize },
   };
 };
 
-const receiveEmployees = (pageNo, pageSize, pageCount, employees) => {
+const employeeSuccess = (pageNo, pageSize, pageCount, employees) => {
   return {
-    type   : actionTypes.RECEIVE_EMPLOYEES,
+    type   : types.EMPLOYEES_SUCCESS,
     payload: { pageNo, pageSize, pageCount, employees }
+  };
+};
+
+const employeeFailure = (pageNo, pageSize, message, status) => {
+  return {
+    type   : types.EMPLOYEES_FAILURE,
+    payload: {
+      pageNo,
+      pageSize,
+      error: { message, status }
+    }
   };
 };
 
 const fetchEmployees = (pageNo, pageSize) => {
   return (dispatch) => {
     dispatch(requestEmployees(pageNo, pageSize));
-    return EmployeeApi.getEmployees(pageNo, pageSize)
-                      .then(
-                        response => dispatch(
-                          receiveEmployees(
-                            response.pageNo,
-                            response.pageSize,
-                            response.pageCount,
-                            response.employees
-                          )
-                        )
-                      );
+    return EmployeeApi
+      .getEmployees(pageNo, pageSize)
+      .then(
+        response => dispatch(
+          employeeSuccess(
+            response.pageNo,
+            response.pageSize,
+            response.pageCount,
+            response.employees
+          )
+        )
+      )
+      .catch(
+        error => {
+          dispatch(employeeFailure(error.message, error.status));
+          throw error;
+        }
+      );
   };
 };
 
@@ -51,19 +74,16 @@ const shouldFetchEmployees = (state, pageNo, pageSize) => {
     return false;
   }
 
-  if (employeePagination.pages[pageNo].isFetching
-    || !employeePagination.pages[pageNo].ids
-    || employeePagination.pages[pageNo].ids.length === 0) {
+  if (employeePagination.pages[pageNo].error) {
     return true;
   }
 
-  return false;
+  return !employeePagination.pages[pageNo].ids || employeePagination.pages[pageNo].ids.length === 0;
 };
 
 export const loadEmployees = (pageNo, pageSize) => {
   return (dispatch, getState) => {
     if (shouldFetchEmployees(getState(), pageNo, pageSize)) {
-      console.log(`fetching ${pageSize} items of page ${pageNo}`);
       return dispatch(fetchEmployees(pageNo, pageSize));
     }
     else {
@@ -72,7 +92,7 @@ export const loadEmployees = (pageNo, pageSize) => {
               pagination: { employeePagination }
             } = getState();
       return dispatch(
-        receiveEmployees(
+        employeeSuccess(
           pageNo,
           pageSize,
           getState().pagination.employeePagination.pageCount,

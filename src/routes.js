@@ -5,8 +5,8 @@ import App from "./components/App";
 import HomePage from "./components/HomePage";
 import AboutPage from "./components/AboutPage";
 import NotFoundPage from "./components/NotFoundPage";
-import EmployeeSummaryPage from "./containers/employee/main/EmployeeSummaryPage";
-import EmployeeDetailsPage from "./containers/employee/main/EmployeeDetailsPage";
+import EmployeeSummaryPage from "./containers/employee/EmployeeSummaryPage";
+import EmployeeDetailsPage from "./containers/employee/EmployeeDetailsPage";
 
 export default (
   <Route path={ path.APP } component={ App }>
