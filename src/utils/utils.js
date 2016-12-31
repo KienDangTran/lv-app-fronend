@@ -29,7 +29,7 @@ export const addLocationSearchVariable = (key, value) => {
   }
   const queryVariables = getQueryVariables();
   if (!document.location.search) {
-    document.location.search += `?${key}=${value}`;
+    document.location.search = `?${key}=${value}`;
   } else if (!queryVariables[key]) {
     document.location.search += `&${key}=${value}`;
   } else {

@@ -4,12 +4,12 @@ export default {
   },
   pagination: {
     employeePagination: {
-      currentPage: 1,
-      pageCount  : 1,
-      pageSize   : 5,
-      pages      : {
+      activePage: 1,
+      pageCount : 1,
+      pageInfo  : {
         1: {
           ids     : [],
+          pageSize: 10,
           fetching: false,
           error   : {}
         }

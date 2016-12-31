@@ -34,8 +34,8 @@ class Header extends React.Component {
 
             <NavItem
               eventKey={ 2 }
-              href={ path.EMPLOYEE }
-              onClick={ () => navigate(path.EMPLOYEE) }
+              href={ `${path.EMPLOYEE}?pageNo=1&pageSize=10` }
+              onClick={ () => navigate(`${path.EMPLOYEE}?pageNo=1&pageSize=10`) }
               active={ isActive(path.EMPLOYEE) }
             >
               Employee
@@ -61,10 +61,12 @@ class Header extends React.Component {
 }
 
 Header.propTypes = {
-  router: React.PropTypes.shape({
-    push    : React.PropTypes.func.isRequired,
-    isActive: React.PropTypes.func.isRequired
-  }).isRequired
+  router: React.PropTypes.shape(
+    {
+      push    : React.PropTypes.func.isRequired,
+      isActive: React.PropTypes.func.isRequired
+    }
+  ).isRequired
 };
 
 export default withRouter(Header);

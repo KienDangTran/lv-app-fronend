@@ -25,17 +25,28 @@ const employees = (
   return employees;
 };
 
-const pages = (pages = initialState.pagination.employeePagination.pages, action = {}) => {
+const pageInfo = (pageInfo = initialState.pagination.employeePagination.pageInfo, action = {}) => {
   switch (action.type) {
     case types.EMPLOYEES_REQUEST:
-      return Object.assign({}, pages, { [action.payload.pageNo]: { ids: [], fetching: true } });
+      return Object.assign(
+        {},
+        pageInfo,
+        {
+          [action.payload.pageNo]: {
+            ids     : [],
+            pageSize: action.payload.pageSize,
+            fetching: true
+          }
+        }
+      );
     case types.EMPLOYEES_SUCCESS:
       return Object.assign(
         {},
-        pages,
+        pageInfo,
         {
           [action.payload.pageNo]: {
             ids     : action.payload.employees.map(employee => employee.code),
+            pageSize: action.payload.pageSize,
             fetching: false
           }
         }
@@ -43,27 +54,28 @@ const pages = (pages = initialState.pagination.employeePagination.pages, action 
     case types.EMPLOYEES_FAILURE:
       return Object.assign(
         {},
-        pages,
+        pageInfo,
         {
           [action.payload.pageNo]: {
-            ids     : [...pages[action.payload.pageNo]],
+            ids     : [...pageInfo[action.payload.pageNo]],
+            pageSize: action.payload.pageSize,
             fetching: false,
             error   : action.payload.error
           }
         }
       );
     default:
-      return pages;
+      return pageInfo;
   }
 };
 
-const currentPage = (
-  currentPage = initialState.pagination.employeePagination.currentPage,
+const activePage = (
+  activePage = initialState.pagination.employeePagination.activePage,
   action = {}
 ) => {
   return action.type === types.EMPLOYEES_SUCCESS && action.payload.pageNo
     ? action.payload.pageNo
-    : currentPage;
+    : activePage;
 };
 
 const pageCount = (
@@ -75,15 +87,6 @@ const pageCount = (
     : pageCount;
 };
 
-const pageSize = (
-  pageSize = initialState.pagination.employeePagination.pageSize,
-  action = {}
-) => {
-  return action.type === types.EMPLOYEES_SUCCESS && action.payload.pageSize
-    ? action.payload.pageSize
-    : pageSize;
-};
-
-const employeePagination = combineReducers({ pages, currentPage, pageCount, pageSize });
+const employeePagination = combineReducers({ pageInfo, activePage, pageCount });
 
 export { employees, employeePagination };

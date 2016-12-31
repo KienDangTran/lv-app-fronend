@@ -1,9 +1,9 @@
 import React from "react";
 import { bindActionCreators } from "redux";
+import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import * as employeeActions from "../../actions/employee/employeeActions";
 import EmployeeList from "../../components/employee/EmployeeList";
-import { addLocationSearchVariable } from "../../utils/utils";
 import {
   PageHeader,
   Modal,
@@ -18,17 +18,22 @@ import {
 class EmployeeSummaryPage extends React.Component {
   constructor(props, context) {
     super(props, context);
-    this.state         = { showModal: false };
-    this.loadEmployees = this.loadEmployees.bind(this);
+    this.state          = { showModal: false };
+    this.redirectToPage = this.redirectToPage.bind(this);
   }
 
   componentDidMount() {
-    this.props.actions.loadEmployees(this.props.employeePagination.currentPage, this.props.employeePagination.pageSize);
+    this.props.actions.loadEmployees(this.props.pageNo, this.props.pageSize);
   }
 
-  loadEmployees(pageNo, pageSize) {
-    addLocationSearchVariable("page",pageNo);
-    this.props.actions.loadEmployees(pageNo, pageSize);
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.pageNo !== this.props.pageNo || nextProps.pageSize !== this.props.pageSize) {
+      this.props.actions.loadEmployees(nextProps.pageNo, nextProps.pageSize);
+    }
+  }
+
+  redirectToPage(pageNo, pageSize) {
+    this.props.router.push(`${this.props.location.pathname}?pageNo=${pageNo}&pageSize=${pageSize}`);
   }
 
   render() {
@@ -56,8 +61,9 @@ class EmployeeSummaryPage extends React.Component {
       </Modal>
     );
 
-    const currentPage      = this.props.employeePagination.currentPage;
-    const pageSize         = this.props.employeePagination.pageSize;
+    const pageNo           = this.props.pageNo;
+    const pageSize         = this.props.pageSize;
+    const fetching         = this.props.fetching;
     const pageSizeValues   = [5, 10, 25, 50];
     const pageSizeSelector = (
       <div>
@@ -65,7 +71,8 @@ class EmployeeSummaryPage extends React.Component {
         <DropdownButton id="pageSizeSelection"
                         title={ pageSize }
                         bsStyle="link"
-                        onSelect={ (e) => this.loadEmployees(currentPage, pageSizeValues[e]) }
+                        disabled={ fetching }
+                        onSelect={ (e) => this.redirectToPage(1, pageSizeValues[e]) }
         >
           {
             pageSizeValues.map((value, index) => <MenuItem key={index} eventKey={ index }>{ value }</MenuItem>)
@@ -74,18 +81,18 @@ class EmployeeSummaryPage extends React.Component {
       </div>
     );
 
-    const pageCount  = this.props.employeePagination.pageCount;
+    const pageCount  = this.props.pageCount;
     const pagination = (
       <Pagination
-        first={ pageCount > 1 && currentPage > 1 }
-        prev={ pageCount > 1 && currentPage > 1 }
-        next={ pageCount > 1 && currentPage < pageCount }
-        last={ pageCount > 1 && currentPage < pageCount }
+        first={ pageCount > 1 && pageNo > 1 }
+        prev={ pageCount > 1 && pageNo > 1 }
+        next={ pageCount > 1 && pageNo < pageCount }
+        last={ pageCount > 1 && pageNo < pageCount }
         ellipsis
         items={ pageCount }
         maxButtons={ 10 }
-        activePage={ currentPage }
-        onSelect={ (e) => this.loadEmployees(e, pageSize) }
+        activePage={ pageNo }
+        onSelect={ (e) => this.redirectToPage(e, pageSize) }
         className="pull-right"
       />
     );
@@ -94,7 +101,11 @@ class EmployeeSummaryPage extends React.Component {
       <div>
         <PageHeader>Employee Summary</PageHeader>
         { pageSizeSelector }
-        <EmployeeList employees={ this.props.employees } deleteRow={ openDeleteDialog }/>
+        <EmployeeList
+          employees={ this.props.employees }
+          deleteRow={ openDeleteDialog }
+          disabled={ fetching }
+        />
         { deleteDialog }
         { pagination }
       </div>
@@ -103,20 +114,57 @@ class EmployeeSummaryPage extends React.Component {
 }
 
 EmployeeSummaryPage.propTypes = {
-  actions           : React.PropTypes.object.isRequired,
-  employeePagination: React.PropTypes.object,
-  employees         : React.PropTypes.array,
+  pageNo   : React.PropTypes.number.isRequired,
+  pageCount: React.PropTypes.number.isRequired,
+  pageSize : React.PropTypes.number,
+  fetching : React.PropTypes.bool,
+  employees: React.PropTypes.array,
+  actions  : React.PropTypes.shape(
+    {
+      loadEmployees: React.PropTypes.func.isRequired
+    }
+  ).isRequired,
+  location : React.PropTypes.shape(
+    {
+      pathname: React.PropTypes.string.isRequired,
+      query   : React.PropTypes.object.isRequired
+    }
+  ).isRequired,
+  router   : React.PropTypes.shape(
+    {
+      push: React.PropTypes.func.isRequired
+    }
+  ).isRequired
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   const {
           entities: { employees },
-          pagination: { employeePagination }
+          pagination: { employeePagination: { activePage, pageCount, pageInfo } }
         } = state;
 
+  let pageNo      = activePage;
+  let pageSize    = pageInfo[activePage].pageSize;
+  let fetching    = pageInfo[activePage].fetching;
+  let employeeArr = pageInfo[activePage].ids.map(id => employees[id]);
+
+  if (ownProps && ownProps.location.query) {
+    pageNo      = ownProps.location.query.pageNo ? parseInt(ownProps.location.query.pageNo) : pageNo;
+    pageSize    = ownProps.location.query.pageSize
+      ? parseInt(ownProps.location.query.pageSize)
+      : pageInfo[pageNo] && pageInfo[pageNo].pageSize
+                    ? pageInfo[pageNo].pageSize
+                    : 10;
+    fetching    = pageInfo[pageNo] ? pageInfo[pageNo].fetching : false;
+    employeeArr = pageInfo[pageNo] ? pageInfo[pageNo].ids.map(id => employees[id]) : [];
+  }
+
   return {
-    employeePagination: employeePagination,
-    employees         : employeePagination.pages[employeePagination.currentPage].ids.map(id => employees[id]),
+    pageNo,
+    pageCount,
+    pageSize,
+    fetching,
+    employees: employeeArr,
   };
 };
 
@@ -126,4 +174,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(EmployeeSummaryPage);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EmployeeSummaryPage));

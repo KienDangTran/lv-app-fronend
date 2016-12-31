@@ -227,30 +227,34 @@ class EmployeeApi {
       (resolve, reject) => {
         setTimeout(
           () => {
-            if (pageNo === 3 && pageSize === 10) {
+            if (pageNo === 3 && pageSize === 5) {
               reject(
                 {
-                  message : "Not found",
-                  status: 404
+                  pageNo,
+                  pageSize,
+                  message: "Not found",
+                  status : 404
                 }
               );
             }
 
-            if (pageNo === 3 && pageSize === 10) {
+            if (pageNo === 4 && pageSize === 5) {
               reject(
                 {
-                  message : "Request time out",
-                  status: 500
+                  pageNo,
+                  pageSize,
+                  message: "Request time out",
+                  status : 500
                 }
               );
             }
 
             resolve(
               {
-                employees: employees.slice((pageNo - 1) * pageSize, pageSize * pageNo),
                 pageNo,
                 pageSize,
-                pageCount: Math.ceil(employees.length / pageSize)
+                pageCount: Math.ceil(employees.length / pageSize),
+                employees: employees.slice((pageNo - 1) * pageSize, pageSize * pageNo)
               }
             );
           }, Math.random() * 2000 + 1000

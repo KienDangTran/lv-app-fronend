@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import { Table, Glyphicon, Button } from "react-bootstrap";
 import * as path from "../../constants/paths";
 
-const EmployeeList = ({ employees, deleteRow }) => {
+const EmployeeList = ({ employees, deleteRow, disabled }) => {
   return (
     <Table responsive striped>
       <thead>
@@ -15,22 +15,24 @@ const EmployeeList = ({ employees, deleteRow }) => {
       </thead>
       <tbody>
       {
-        employees.map((employee, index) => {
-          return (
-            <tr key={ index }>
-              <td>
-                <input type="checkbox" name="eSelect"/>
-                <Button bsStyle="link" bsSize="xsmall" onClick={ deleteRow }>
-                  <Glyphicon glyph="trash"/>
-                </Button>
-              </td>
-              <td>
-                <Link to={`${path.EMPLOYEE}/${employee.code }`}>{ employee.code }</Link>
-              </td>
-              <td>{ employee.name }</td>
-            </tr>
-          );
-        })
+        employees.map(
+          (employee, index) => {
+            return (
+              <tr key={ index }>
+                <td>
+                  <input type="checkbox" name="eSelect" disabled={ disabled }/>
+                  <Button bsStyle="link" bsSize="xsmall" onClick={ deleteRow } disabled={ disabled }>
+                    <Glyphicon glyph="trash"/>
+                  </Button>
+                </td>
+                <td>
+                  <Link to={`${path.EMPLOYEE}/${employee.code }`} disabled={ disabled }>{ employee.code }</Link>
+                </td>
+                <td>{ employee.name }</td>
+              </tr>
+            );
+          }
+        )
       }
       </tbody>
     </Table>
@@ -40,6 +42,7 @@ const EmployeeList = ({ employees, deleteRow }) => {
 EmployeeList.propTypes = {
   employees: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
   deleteRow: React.PropTypes.func.isRequired,
+  disabled : React.PropTypes.bool
 };
 
 export default EmployeeList;
