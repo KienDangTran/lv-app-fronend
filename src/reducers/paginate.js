@@ -7,13 +7,13 @@
  */
 const paginate = ({ types, mapActionToKey }) => {
   if (!Array.isArray(types) || types.length !== 3) {
-    throw new Error('Expected types to be an array of three elements.');
+    throw new Error("Expected types to be an array of three elements.");
   }
-  if (!types.every(t => typeof t === 'string')) {
-    throw new Error('Expected types to be strings.');
+  if (!types.every(t => typeof t === "string")) {
+    throw new Error("Expected types to be strings.");
   }
-  if (typeof mapActionToKey !== 'function') {
-    throw new Error('Expected mapActionToKey to be a function.');
+  if (typeof mapActionToKey !== "function") {
+    throw new Error("Expected mapActionToKey to be a function.");
   }
 
   const [ requestType, successType, failureType ] = types;
@@ -57,8 +57,8 @@ const paginate = ({ types, mapActionToKey }) => {
       case successType:
       case failureType: // eslint-disable-line no-case-declarations
         const key = mapActionToKey(action);
-        if (typeof key !== 'string') {
-          throw new Error('Expected key to be a string.');
+        if (typeof key !== "string") {
+          throw new Error("Expected key to be a string.");
         }
         return {
           ...state,

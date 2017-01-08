@@ -222,6 +222,13 @@ const employees = [
 ];
 
 class EmployeeApi {
+
+  /**
+   *
+   * @param pageNo
+   * @param pageSize
+   * @returns {Promise}
+   */
   static getEmployees(pageNo = 1, pageSize = 5) {
     return new Promise(
       (resolve, reject) => {

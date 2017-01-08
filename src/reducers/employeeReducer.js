@@ -1,12 +1,12 @@
 import { combineReducers } from "redux";
 import initialState from "./initialState";
-import { types } from "../actions/employee/employeeActions";
+import { EMPLOYEES_REQUEST, EMPLOYEES_SUCCESS, EMPLOYEES_FAILURE } from "../actions/employee/employeeActions";
 
 const employees = (
   employees = initialState.entities.employees,
   action = {}
 ) => {
-  if (action.type === types.EMPLOYEES_SUCCESS) {
+  if (action.type === EMPLOYEES_SUCCESS) {
     let _employees = {};
     action.payload.employees.forEach(
       employee => {
@@ -27,7 +27,7 @@ const employees = (
 
 const pageInfo = (pageInfo = initialState.pagination.employeePagination.pageInfo, action = {}) => {
   switch (action.type) {
-    case types.EMPLOYEES_REQUEST:
+    case EMPLOYEES_REQUEST:
       return Object.assign(
         {},
         pageInfo,
@@ -39,7 +39,7 @@ const pageInfo = (pageInfo = initialState.pagination.employeePagination.pageInfo
           }
         }
       );
-    case types.EMPLOYEES_SUCCESS:
+    case EMPLOYEES_SUCCESS:
       return Object.assign(
         {},
         pageInfo,
@@ -51,7 +51,7 @@ const pageInfo = (pageInfo = initialState.pagination.employeePagination.pageInfo
           }
         }
       );
-    case types.EMPLOYEES_FAILURE:
+    case EMPLOYEES_FAILURE:
       return Object.assign(
         {},
         pageInfo,
@@ -73,7 +73,7 @@ const activePage = (
   activePage = initialState.pagination.employeePagination.activePage,
   action = {}
 ) => {
-  return action.type === types.EMPLOYEES_SUCCESS && action.payload.pageNo
+  return action.type === EMPLOYEES_SUCCESS && action.payload.pageNo
     ? action.payload.pageNo
     : activePage;
 };
@@ -82,7 +82,7 @@ const pageCount = (
   pageCount = initialState.pagination.employeePagination.pageCount,
   action = {}
 ) => {
-  return action.type === types.EMPLOYEES_SUCCESS && action.payload.pageCount
+  return action.type === EMPLOYEES_SUCCESS && action.payload.pageCount
     ? action.payload.pageCount
     : pageCount;
 };
