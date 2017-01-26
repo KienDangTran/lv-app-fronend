@@ -27,6 +27,7 @@
   "rules"        : {
     "import/extensions"                 : 1,
     "quotes"                            : 0,
+    "no-case-declarations"              : 0,
     "no-console"                        : 1,
     "no-debugger"                       : 1,
     "no-var"                            : 1,

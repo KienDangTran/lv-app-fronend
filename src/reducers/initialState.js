@@ -1,17 +1,20 @@
 export default {
   entities  : {
-    employees: {},
+    employee: {},
   },
   pagination: {
-    employeePagination: {
+    employee: {
       activePage: 1,
+      pageSize  : 10,
       pageCount : 1,
-      pageInfo  : {
+      fetching  : false,
+      pages     : {
         1: {
-          ids     : [],
-          pageSize: 10,
-          fetching: false,
-          error   : {}
+          ids  : [],
+          error: {
+            message: "",
+            status : 500
+          }
         }
       }
     }

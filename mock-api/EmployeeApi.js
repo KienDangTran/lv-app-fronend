@@ -222,7 +222,13 @@ const employees = [
 ];
 
 class EmployeeApi {
-  static getEmployees(pageNo = 1, pageSize = 5) {
+  /**
+   *
+   * @param pageNo
+   * @param pageSize
+   * @returns {Promise}
+   */
+  static fetchEmployees(pageNo = 1, pageSize = 10) {
     return new Promise(
       (resolve, reject) => {
         setTimeout(
@@ -230,8 +236,6 @@ class EmployeeApi {
             if (pageNo === 3 && pageSize === 5) {
               reject(
                 {
-                  pageNo,
-                  pageSize,
                   message: "Not found",
                   status : 404
                 }
@@ -241,25 +245,34 @@ class EmployeeApi {
             if (pageNo === 4 && pageSize === 5) {
               reject(
                 {
-                  pageNo,
-                  pageSize,
                   message: "Request time out",
                   status : 500
                 }
               );
             }
 
-            resolve(
-              {
-                pageNo,
-                pageSize,
-                pageCount: Math.ceil(employees.length / pageSize),
-                employees: employees.slice((pageNo - 1) * pageSize, pageSize * pageNo)
-              }
-            );
-          }, Math.random() * 2000 + 1000
+            resolve(employees.slice((pageNo - 1) * pageSize, pageSize * pageNo));
+          },
+          Math.random() * 2000 + 1000
         );
       }
+    );
+  }
+
+  /**
+   *
+   * @returns {Promise}
+   */
+  static countEmployees() {
+    return new Promise(
+      (resolve) => {
+        setTimeout(
+          () => {
+            resolve(employees.length);
+          }
+        )
+      },
+      Math.random() * 2000 + 1000
     );
   }
 

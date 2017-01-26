@@ -1,7 +1,7 @@
 import React from "react";
 import { withRouter } from "react-router";
 import { Navbar, Nav, NavItem, Glyphicon } from "react-bootstrap";
-import * as path from "../../constants/paths";
+import * as path from "../../constants/navigations";
 
 class Header extends React.Component {
   render() {
@@ -34,8 +34,8 @@ class Header extends React.Component {
 
             <NavItem
               eventKey={ 2 }
-              href={ `${path.EMPLOYEE}?pageNo=1&pageSize=10` }
-              onClick={ () => navigate(`${path.EMPLOYEE}?pageNo=1&pageSize=10`) }
+              href={ path.EMPLOYEE }
+              onClick={ () => navigate(path.EMPLOYEE) }
               active={ isActive(path.EMPLOYEE) }
             >
               Employee
