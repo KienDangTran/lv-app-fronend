@@ -1,4 +1,4 @@
-export const guid = () => {
+export function guid() {
   const s4 = () => {
     return Math.floor((1 + Math.random()) * 0x10000)
                .toString(16)
@@ -7,35 +7,20 @@ export const guid = () => {
 
   return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
     s4() + '-' + s4() + s4() + s4();
-};
+}
 
-export const getQueryVariables = () => {
-  const variables = document.location.search.substring(1).split("&");
-  const result    = [];
-  if (variables) {
-    variables.map(
-      variable => {
-        const [k, v] = variable.split("&");
-        result.push({ [k]: v });
-      }
-    );
+export function getParameterByName(name, url) {
+  if (!url) {
+    url = window.location.href;
   }
-  return result;
-};
-
-export const addLocationSearchVariable = (key, value) => {
-  if (!key || !value) {
-    return;
+  name          = name.replace(/[\[\]]/g, "\\$&");
+  const regex   = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)");
+  const results = regex.exec(url);
+  if (!results) {
+    return null;
   }
-  const queryVariables = getQueryVariables();
-  if (!document.location.search) {
-    document.location.search = `?${key}=${value}`;
-  } else if (!queryVariables[key]) {
-    document.location.search += `&${key}=${value}`;
-  } else {
-    queryVariables[key] = value;
-    let query           = document.location.search.split("?")[0];
-    queryVariables.map(([k, v], index) => query += `${index === 0 ? "?" : "&"}${k}=${v}`);
-    document.location.search = query;
+  if (!results[2]) {
+    return '';
   }
-};
+  return decodeURIComponent(results[2].replace(/\+/g, " "));
+}

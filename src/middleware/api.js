@@ -1,60 +1,16 @@
-import { schema, normalize } from "normalizr";
-import { fetch } from "../../mock-api/MockApi";
-
-const API_ROOT = "localhost:8080/api/";
+import callApi from "../api/agent";
 
 /**
- * Fetches an API response and normalizes the result JSON according to schema.This makes every API response have the
- * same shape, regardless of how nested it was.
- * @param endpoint
- * @param schema
- * @returns {*|Promise.<TResult>}
+ * Action key that carries API call info interpreted by this Redux middleware.
+ * @type {Symbol}
  */
-const callApi = (endpoint, schema) => {
-  const fullUrl = (endpoint.indexOf(API_ROOT) === -1) ? API_ROOT + endpoint : endpoint;
-  return fetch(fullUrl)
-  .then(
-    response => {
-      return Object.assign({}, normalize(response, schema));
-    }
-  )
-  .catch(
-    error => {
-      return Object.assign({}, normalize(error, schema));
-    }
-  );
-};
-
-// We use this Normalizr schemas to transform API responses from a nested form
-// to a flat form where employees are placed in `entities`, and nested
-// JSON objects are replaced with their IDs. This is very convenient for
-// consumption by reducers, because we can easily build a normalized tree
-// and keep it updated as we fetch more data.
-
-// Read more about Normalizr: https://github.com/paularmstrong/normalizr
-
-// API may return results with uppercase letters while the query
-// doesn't contain any. For example, "someuser" could result in "SomeUser"
-// leading to a frozen UI as it wouldn't find "someuser" in the entities.
-// That's why we're forcing lower cases down there.
-
-const employeeSchema = new schema.Entity(
-  "employees", {
-    idAttribute: employee => employee.code.toUpperCase()
-  }
-);
-
-// Schemas for API responses.
-export const Schemas = {
-  EMPLOYEE      : employeeSchema,
-  EMPLOYEE_ARRAY: new schema.Array(employeeSchema)
-};
-
-// Action key that carries API call info interpreted by this Redux middleware.
 export const CALL_API = Symbol("Call API");
 
-// A Redux middleware that interprets actions with CALL_API info specified.
-// Performs the call and promises when such actions are dispatched.
+/**
+ * A Redux middleware that interprets actions with CALL_API info specified.
+ * Performs the call and promises when such actions are dispatched.
+ * @param store
+ */
 export default store => next => action => {
   const callAPI = action[CALL_API];
   if (typeof callAPI === "undefined") {
@@ -70,9 +26,6 @@ export default store => next => action => {
 
   if (typeof endpoint !== "string") {
     throw new Error("Specify a string endpoint URL.");
-  }
-  if (!schema) {
-    throw new Error("Specify one of the exported Schemas.");
   }
   if (!Array.isArray(types) || types.length !== 3) {
     throw new Error("Expected an array of three action types.");
@@ -94,8 +47,8 @@ export default store => next => action => {
     response => next(
       actionWith(
         {
-          response,
-          type: successType
+          type   : successType,
+          payload: response
         }
       )
     ),
@@ -103,8 +56,7 @@ export default store => next => action => {
       actionWith(
         {
           type   : failureType,
-          message: error.message || "Bad Request",
-          status : error.status || 400
+          payload: error
         }
       )
     )

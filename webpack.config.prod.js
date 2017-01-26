@@ -1,6 +1,3 @@
-// For info about this file refer to webpack and webpack-hot-middleware documentation
-// For info on how we're generating bundles with hashed filenames for cache busting:
-// https://medium.com/@okonetchnikov/long-term-caching-of-static-assets-with-webpack-1ecb139adb95#.w99i89nsz
 import webpack from "webpack";
 import ExtractTextPlugin from "extract-text-webpack-plugin";
 import WebpackMd5Hash from "webpack-md5-hash";
@@ -18,8 +15,6 @@ export default {
     extensions: ['', '.js', '.jsx', '.json']
   },
   debug  : true,
-  devtool: 'source-map', // more info:https://webpack.github.io/docs/build-performance.html#sourcemaps and
-                         // https://webpack.github.io/docs/configuration.html#devtool
   noInfo : true, // set to false to see a list of every file being bundled.
   entry  : path.resolve(__dirname, 'src/index'),
   target : 'web', // necessary per https://webpack.github.io/docs/testing.html#compile-and-test

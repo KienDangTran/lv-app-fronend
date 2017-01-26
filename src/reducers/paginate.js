@@ -1,49 +1,69 @@
+import initialState from "./initialState";
+
 /**
- * Creates a reducer managing pagination, given the action types to handle, and a function telling how to extract the
- * key from an action.
+ * Creates a reducer managing pagination, given the action types to handle,
+ * and a schema key telling how to extract the key from an action.
  * @param types
- * @param mapActionToKey
+ * @param schemaKey
  * @returns {function(*=, *=)}
  */
-const paginate = ({ types, mapActionToKey }) => {
-  if (!Array.isArray(types) || types.length !== 3) {
+const paginate = ({ types, schemaKey }) => {
+  if (!Array.isArray(types) || types.length < 3) {
     throw new Error("Expected types to be an array of three elements.");
   }
   if (!types.every(t => typeof t === "string")) {
     throw new Error("Expected types to be strings.");
   }
-  if (typeof mapActionToKey !== "function") {
-    throw new Error("Expected mapActionToKey to be a function.");
+  if (typeof schemaKey !== "string") {
+    throw new Error("Expected schemaKey to be a string.");
   }
 
-  const [ requestType, successType, failureType ] = types;
+  const [ requestType, successType, failureType, countType ] = types;
 
   const updatePagination = (
-    state = {
-      isFetching : false,
-      nextPageUrl: undefined,
-      pageCount  : 0,
-      ids        : []
-    }, action
+    state = initialState.pagination[schemaKey],
+    action
   ) => {
     switch (action.type) {
       case requestType:
         return {
           ...state,
-          isFetching: true
+          activePage: action.pageNo,
+          pageSize  : action.pageSize,
+          fetching  : true
         };
       case successType:
         return {
           ...state,
-          isFetching : false,
-          ids        : [...state.ids, ...action.response.result],
-          nextPageUrl: action.response.nextPageUrl,
-          pageCount  : state.pageCount + 1
+          activePage: action.pageNo,
+          pageSize  : action.pageSize,
+          fetching  : false,
+          pages     : {
+            ...state.pages,
+            [action.pageNo]: {
+              ids: action.payload.result
+            }
+          }
         };
       case failureType:
         return {
           ...state,
-          isFetching: false
+          fetching: false,
+          pages   : {
+            ...state.pages,
+            activePage     : action.pageNo,
+            pageSize       : action.pageSize,
+            fetching       : false,
+            [action.pageNo]: {
+              error: action.payload.error
+            }
+          }
+        };
+      case countType:
+        const pageSize = state.pageSize;
+        return {
+          ...state,
+          pageCount: Math.ceil(action.payload / pageSize)
         };
       default:
         return state;
@@ -55,15 +75,12 @@ const paginate = ({ types, mapActionToKey }) => {
     switch (action.type) {
       case requestType:
       case successType:
-      case failureType: // eslint-disable-line no-case-declarations
-        const key = mapActionToKey(action);
-        if (typeof key !== "string") {
+      case failureType:
+      case countType:
+        if (typeof schemaKey !== "string") {
           throw new Error("Expected key to be a string.");
         }
-        return {
-          ...state,
-          [key]: updatePagination(state[key], action)
-        };
+        return updatePagination(state, action);
       default:
         return state;
     }

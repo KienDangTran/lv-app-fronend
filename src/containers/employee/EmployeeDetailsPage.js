@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import * as employeeActions from "../../actions/employee/employeeActions";
+import * as employeeActions from "../../actions/employeeActions";
 import EmployeeForm from "../../components/employee/EmployeeForm";
 
 class EmployeeDetailsPage extends React.Component {
