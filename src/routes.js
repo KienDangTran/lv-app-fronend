@@ -7,6 +7,7 @@ import AboutPage from "./components/AboutPage";
 import NotFoundPage from "./components/NotFoundPage";
 import EmployeeSummaryPage from "./containers/employee/EmployeeSummaryPage";
 import EmployeeDetailsPage from "./containers/employee/EmployeeDetailsPage";
+import UserSummaryPage from "./containers/user/UserSummaryPage";
 
 export default (
   <Route path={ path.APP } component={ App }>
@@ -14,6 +15,7 @@ export default (
     <Route path={ path.ABOUT} component={ AboutPage }/>
     <Route path={ path.EMPLOYEE } component={ EmployeeSummaryPage }/>
     <Route path={ path.EMPLOYEE_DETAILS } component={ EmployeeDetailsPage }/>
+    <Route path={ path.USER } component={ UserSummaryPage }/>
     <Route path="*" component={ NotFoundPage }/>
   </Route>
 );

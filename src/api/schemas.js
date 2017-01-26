@@ -21,12 +21,20 @@ const employee = new schema.Entity(
   { idAttribute: employee => employee.code.toUpperCase() }
 );
 
+const user = new schema.Entity(
+  "user",
+  {},
+  { idAttribute: user => user.userId.toUpperCase() }
+);
+
 /**
  * Schemas for API responses.
  */
 const schemas = {
   EMPLOYEE      : employee,
-  EMPLOYEE_ARRAY: new schema.Array(employee)
+  EMPLOYEE_ARRAY: new schema.Array(employee),
+  USER          : user,
+  USER_ARRAY    : new schema.Array(user)
 };
 
 export default schemas;

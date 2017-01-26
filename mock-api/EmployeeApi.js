@@ -80,7 +80,7 @@ const employees = [
     userId     : "U0000008"
   },
   {
-    code       : "EMP0009",
+    code       : "EMP00009",
     name       : "Employee 9",
     dateOfBirth: "1991-09-12",
     sex        : "2",
@@ -200,16 +200,6 @@ const employees = [
     userId     : "U00000020"
   },
   {
-    code       : "EMP000022",
-    name       : "Employee 200",
-    dateOfBirth: "",
-    sex        : "0",
-    email      : "e200@example.com",
-    phone      : "01648172820",
-    status     : "1",
-    userId     : "U00000022"
-  },
-  {
     code       : "EMP000021",
     name       : "Employee 200",
     dateOfBirth: "",
@@ -218,6 +208,16 @@ const employees = [
     phone      : "01648172820",
     status     : "1",
     userId     : "U00000021"
+  },
+  {
+    code       : "EMP000022",
+    name       : "Employee 200",
+    dateOfBirth: "",
+    sex        : "0",
+    email      : "e200@example.com",
+    phone      : "01648172820",
+    status     : "1",
+    userId     : "U00000022"
   }
 ];
 

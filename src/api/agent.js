@@ -1,4 +1,4 @@
-import fetch from "../../mock-api/mockApi";
+import fetch from "../../mock-api";
 import { normalize } from "normalizr";
 const API_ROOT = "";
 

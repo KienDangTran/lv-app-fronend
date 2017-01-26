@@ -33,7 +33,7 @@ export const fetchEmployees = (pageNo, pageSize) => {
           pageSize,
           [CALL_API]: {
             types   : [FETCH_EMPLOYEES, FETCH_EMPLOYEES_SUCCESS, FETCH_EMPLOYEES_FAILURE],
-            endpoint: `${endpoint.FETCH_EMPLOYEE}?pageNo=${pageNo}&pageSize=${pageSize}`,
+            endpoint: `${endpoint.FETCH_EMPLOYEES}?pageNo=${pageNo}&pageSize=${pageSize}`,
             schema  : schemas.EMPLOYEE_ARRAY
           }
         })
@@ -71,7 +71,7 @@ export const countEmployees = () => {
       ({
         [CALL_API]: {
           types   : [COUNT_EMPLOYEES, COUNT_EMPLOYEES_SUCCESS, COUNT_EMPLOYEE_FAILURE],
-          endpoint: endpoint.COUNT_EMPLOYEE
+          endpoint: endpoint.COUNT_EMPLOYEES
         }
       })
     );

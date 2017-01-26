@@ -4,6 +4,7 @@ import Immutable from "immutable";
 import initialState from "./initialState";
 import schemas from "../api/schemas";
 import * as employeeActions from "../actions/employeeActions";
+import * as userActions from "../actions/userActions";
 import paginate from "./paginate";
 
 /**
@@ -32,6 +33,17 @@ const pagination = combineReducers(
           employeeActions.FETCH_EMPLOYEES_SUCCESS,
           employeeActions.FETCH_EMPLOYEES_FAILURE,
           employeeActions.COUNT_EMPLOYEES_SUCCESS
+        ]
+      }
+    ),
+    [schemas.USER.key]    : paginate(
+      {
+        schemaKey: schemas.USER.key,
+        types    : [
+          userActions.FETCH_USERS,
+          userActions.FETCH_USERS_SUCCESS,
+          userActions.FETCH_USERS_FAILURE,
+          userActions.COUNT_USERS_SUCCESS
         ]
       }
     )
