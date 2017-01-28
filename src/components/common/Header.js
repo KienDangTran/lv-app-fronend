@@ -1,7 +1,7 @@
 import React from "react";
 import { withRouter } from "react-router";
 import { Navbar, Nav, NavItem, Glyphicon } from "react-bootstrap";
-import * as path from "../../constants/navigations";
+import * as path from "../../constants/navPaths";
 
 class Header extends React.Component {
   render() {
@@ -12,16 +12,33 @@ class Header extends React.Component {
       return this.props.router.isActive(href, indexOnly);
     };
 
-    return (
-      <Navbar inverse collapseOnSelect fluid>
-        <Navbar.Header>
-          <Navbar.Brand>
-            <a className="navbar-brand" href={ path.APP }> <img alt="Brand" src={ require("../../images/branch.png") }/>
-            </a>
-          </Navbar.Brand>
-          <Navbar.Toggle />
-        </Navbar.Header>
-        <Navbar.Collapse>
+    const renderAuthenticationInfo = () => {
+      if (sessionStorage.getItem("jwt")) {
+        return (
+          <Nav pullRight>
+            <NavItem href="#">Welcome, Admin! <Glyphicon glyph="user"/></NavItem>
+            <NavItem href="#"><Glyphicon glyph="log-out"/></NavItem>
+          </Nav>
+        );
+      }
+
+      return (
+        <Nav>
+          <NavItem
+            eventKey={ 1 }
+            href={ path.LOGIN }
+            onClick={ () => navigate(path.LOGIN) }
+            active={ isActive(path.LOGIN) }
+          >
+            Login
+          </NavItem>
+        </Nav>
+      );
+    };
+
+    const renderMenuItems = () => {
+      if (sessionStorage.getItem("jwt")) {
+        return (
           <Nav>
             <NavItem
               eventKey={ 1 }
@@ -57,11 +74,25 @@ class Header extends React.Component {
               About
             </NavItem>
           </Nav>
+        );
+      }
 
-          <Nav pullRight>
-            <NavItem href="#">Welcome, Admin! <Glyphicon glyph="user"/></NavItem>
-            <NavItem href="#"><Glyphicon glyph="log-out"/></NavItem>
-          </Nav>
+      return null;
+    };
+
+    return (
+      <Navbar inverse collapseOnSelect fluid>
+        <Navbar.Header>
+          <Navbar.Brand>
+            <a className="navbar-brand" href={ path.APP }>
+              <img alt="Brand" src={ require("../../images/branch.png") }/>
+            </a>
+          </Navbar.Brand>
+          <Navbar.Toggle />
+        </Navbar.Header>
+        <Navbar.Collapse>
+          { renderMenuItems() }
+          { renderAuthenticationInfo() }
         </Navbar.Collapse>
       </Navbar>
     );

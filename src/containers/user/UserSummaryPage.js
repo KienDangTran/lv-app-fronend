@@ -1,7 +1,7 @@
 import React from "react";
 import { bindActionCreators } from "redux";
-import { withRouter } from "react-router";
 import { connect } from "react-redux";
+import { withRouter } from "react-router";
 import * as userActions from "../../actions/userActions";
 import UserList from "../../components/user/UserList";
 import {
