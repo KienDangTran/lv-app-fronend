@@ -1,4 +1,7 @@
 export default {
+  session   : {
+    isAuthenticated: !!sessionStorage.getItem('jwt')
+  },
   entities  : {
     employee: {},
     user    : {}
@@ -13,7 +16,7 @@ export default {
         1: {
           ids  : [],
           error: {
-            message: "",
+            message: '',
             status : 500
           }
         }
@@ -28,7 +31,7 @@ export default {
         1: {
           ids  : [],
           error: {
-            message: "",
+            message: '',
             status : 500
           }
         }

@@ -2,18 +2,16 @@ import { combineReducers } from "redux";
 import { routerReducer as routing } from "react-router-redux";
 import Immutable from "immutable";
 import initialState from "./initialState";
-import schemas from "../api/schemas";
+import schemas from "../constants/schemas";
 import * as employeeActions from "../actions/employeeActions";
 import * as userActions from "../actions/userActions";
+import session from "./session";
 import paginate from "./paginate";
 
 /**
  * Updates an entity cache in response to any action with response.entities.
  */
-const entities = (
-  state = initialState.entities,
-  action
-) => {
+const entities = (state = initialState.entities, action) => {
   if (action.payload && action.payload.entities) {
     return Immutable.fromJS(state).mergeDeep(action.payload.entities).toJS();
   }
@@ -52,6 +50,7 @@ const pagination = combineReducers(
 
 const rootReducer = combineReducers(
   {
+    session,
     entities,
     pagination,
     routing

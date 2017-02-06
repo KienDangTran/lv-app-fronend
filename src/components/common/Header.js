@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { Navbar, Nav, NavItem, Glyphicon } from "react-bootstrap";
 import * as path from "../../constants/navPaths";
@@ -13,7 +14,7 @@ class Header extends React.Component {
     };
 
     const renderAuthenticationInfo = () => {
-      if (sessionStorage.getItem("jwt")) {
+      if (this.props.isAuthenticated) {
         return (
           <Nav pullRight>
             <NavItem href="#">Welcome, Admin! <Glyphicon glyph="user"/></NavItem>
@@ -37,7 +38,7 @@ class Header extends React.Component {
     };
 
     const renderMenuItems = () => {
-      if (sessionStorage.getItem("jwt")) {
+      if (this.props.isAuthenticated) {
         return (
           <Nav>
             <NavItem
@@ -100,7 +101,8 @@ class Header extends React.Component {
 }
 
 Header.propTypes = {
-  router: React.PropTypes.shape(
+  isAuthenticated: React.PropTypes.bool.isRequired,
+  router         : React.PropTypes.shape(
     {
       push    : React.PropTypes.func.isRequired,
       isActive: React.PropTypes.func.isRequired
@@ -108,4 +110,10 @@ Header.propTypes = {
   ).isRequired
 };
 
-export default withRouter(Header);
+const mapStateToProps = (state) => {
+  return {
+    isAuthenticated: state.session.isAuthenticated
+  };
+};
+
+export default withRouter(connect(mapStateToProps)(Header));

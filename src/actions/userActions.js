@@ -1,10 +1,10 @@
 import { CALL_API } from "../middleware/api";
 import * as endpoint from "../constants/endpoints";
-import schemas from "../api/schemas";
+import schemas from "../constants/schemas";
 
-export const FETCH_USERS         = "FETCH_USERS";
-export const FETCH_USERS_SUCCESS = "FETCH_USERS_SUCCESS";
-export const FETCH_USERS_FAILURE = "FETCH_USERS_FAILURE";
+export const FETCH_USERS         = 'FETCH_USERS';
+export const FETCH_USERS_SUCCESS = 'FETCH_USERS_SUCCESS';
+export const FETCH_USERS_FAILURE = 'FETCH_USERS_FAILURE';
 
 const shouldFetchUsers = (state, pageNo, pageSize) => {
   const userPagination = state.pagination[schemas.EMPLOYEE.key];
@@ -61,9 +61,9 @@ export const fetchUsers = (pageNo, pageSize) => {
   };
 };
 
-export const COUNT_USERS         = "COUNT_USERS";
-export const COUNT_USERS_SUCCESS = "COUNT_USERS_SUCCESS";
-export const COUNT_USERS_FAILURE = "COUNT_USERS_FAILURE";
+export const COUNT_USERS         = 'COUNT_USERS';
+export const COUNT_USERS_SUCCESS = 'COUNT_USERS_SUCCESS';
+export const COUNT_USERS_FAILURE = 'COUNT_USERS_FAILURE';
 
 export const countUsers = () => {
   return (dispatch) => {

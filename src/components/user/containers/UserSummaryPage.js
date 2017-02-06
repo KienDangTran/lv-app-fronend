@@ -1,9 +1,9 @@
 import React from "react";
 import { bindActionCreators } from "redux";
-import { withRouter } from "react-router";
 import { connect } from "react-redux";
-import * as employeeActions from "../../actions/employeeActions";
-import EmployeeList from "../../components/employee/EmployeeList";
+import { withRouter } from "react-router";
+import * as userActions from "../../../actions/userActions";
+import UserList from "../../../components/user/presenters/UserList";
 import {
   PageHeader,
   Modal,
@@ -15,7 +15,7 @@ import {
   MenuItem
 } from "react-bootstrap";
 
-class EmployeeSummaryPage extends React.Component {
+class UserSummaryPage extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state          = { showModal: false };
@@ -23,14 +23,14 @@ class EmployeeSummaryPage extends React.Component {
   }
 
   componentDidMount() {
-    this.props.actions.fetchEmployees(this.props.activePage, this.props.pageSize);
-    this.props.actions.countEmployees();
+    this.props.actions.fetchUsers(this.props.activePage, this.props.pageSize);
+    this.props.actions.countUsers();
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.activePage !== this.props.activePage || nextProps.pageSize !== this.props.pageSize) {
-      this.props.actions.fetchEmployees(nextProps.activePage, nextProps.pageSize);
-      this.props.actions.countEmployees();
+      this.props.actions.fetchUsers(nextProps.activePage, nextProps.pageSize);
+      this.props.actions.countUsers();
     }
   }
 
@@ -102,10 +102,10 @@ class EmployeeSummaryPage extends React.Component {
 
     return (
       <div>
-        <PageHeader>Employee Summary</PageHeader>
+        <PageHeader>User Summary</PageHeader>
         { pageSizeSelector }
-        <EmployeeList
-          employees={ this.props.employees }
+        <UserList
+          users={ this.props.users }
           deleteRow={ openDeleteDialog }
           disabled={ fetching }
         />
@@ -116,16 +116,16 @@ class EmployeeSummaryPage extends React.Component {
   }
 }
 
-EmployeeSummaryPage.propTypes = {
+UserSummaryPage.propTypes = {
   activePage: React.PropTypes.number.isRequired,
   pageSize  : React.PropTypes.number.isRequired,
   pageCount : React.PropTypes.number.isRequired,
   fetching  : React.PropTypes.bool.isRequired,
-  employees : React.PropTypes.array.isRequired,
+  users     : React.PropTypes.array.isRequired,
   actions   : React.PropTypes.shape(
     {
-      countEmployees: React.PropTypes.func.isRequired,
-      fetchEmployees: React.PropTypes.func.isRequired
+      countUsers: React.PropTypes.func.isRequired,
+      fetchUsers: React.PropTypes.func.isRequired
     }
   ).isRequired,
   location  : React.PropTypes.shape(
@@ -143,30 +143,30 @@ EmployeeSummaryPage.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
   let {
-        entities: { employee },
-        pagination: { employee: { activePage, pageSize, pageCount, fetching, pages } }
+        entities: { user },
+        pagination: { user: { activePage, pageSize, pageCount, fetching, pages } }
       } = state;
 
   if (ownProps && ownProps.location.query) {
-    activePage  = ownProps.location.query.pageNo ? parseInt(ownProps.location.query.pageNo) : activePage;
-    pageSize    = ownProps.location.query.pageSize ? parseInt(ownProps.location.query.pageSize) : pageSize;
+    activePage = ownProps.location.query.pageNo ? parseInt(ownProps.location.query.pageNo) : activePage;
+    pageSize   = ownProps.location.query.pageSize ? parseInt(ownProps.location.query.pageSize) : pageSize;
   }
 
-  const employees = pages[activePage] ? pages[activePage].ids.map(id => employee[id]) : [];
+  const users = pages[activePage] ? pages[activePage].ids.map(id => user[id]) : [];
 
   return {
     activePage,
     pageSize,
     pageCount,
     fetching,
-    employees
+    users
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    actions: bindActionCreators(employeeActions, dispatch)
+    actions: bindActionCreators(userActions, dispatch)
   };
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EmployeeSummaryPage));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UserSummaryPage));

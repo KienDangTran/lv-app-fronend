@@ -1,10 +1,10 @@
 import { CALL_API } from "../middleware/api";
 import * as endpoint from "../constants/endpoints";
-import schemas from "../api/schemas";
+import schemas from "../constants/schemas";
 
-export const FETCH_EMPLOYEES         = "FETCH_EMPLOYEES";
-export const FETCH_EMPLOYEES_SUCCESS = "FETCH_EMPLOYEES_SUCCESS";
-export const FETCH_EMPLOYEES_FAILURE = "FETCH_EMPLOYEES_FAILURE";
+export const FETCH_EMPLOYEES         = 'FETCH_EMPLOYEES';
+export const FETCH_EMPLOYEES_SUCCESS = 'FETCH_EMPLOYEES_SUCCESS';
+export const FETCH_EMPLOYEES_FAILURE = 'FETCH_EMPLOYEES_FAILURE';
 
 const shouldFetchEmployees = (state, pageNo, pageSize) => {
   const employeePagination = state.pagination[schemas.EMPLOYEE.key];
@@ -61,9 +61,9 @@ export const fetchEmployees = (pageNo, pageSize) => {
   };
 };
 
-export const COUNT_EMPLOYEES         = "COUNT_EMPLOYEES";
-export const COUNT_EMPLOYEES_SUCCESS = "COUNT_EMPLOYEES_SUCCESS";
-export const COUNT_EMPLOYEE_FAILURE  = "COUNT_EMPLOYEE_FAILURE";
+export const COUNT_EMPLOYEES         = 'COUNT_EMPLOYEES';
+export const COUNT_EMPLOYEES_SUCCESS = 'COUNT_EMPLOYEES_SUCCESS';
+export const COUNT_EMPLOYEE_FAILURE  = 'COUNT_EMPLOYEE_FAILURE';
 
 export const countEmployees = () => {
   return (dispatch) => {

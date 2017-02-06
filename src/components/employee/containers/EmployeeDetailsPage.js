@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import * as employeeActions from "../../actions/employeeActions";
-import EmployeeForm from "../../components/employee/EmployeeForm";
+import * as employeeActions from "../../../actions/employeeActions";
+import EmployeeForm from "../presenters/EmployeeForm";
 
 class EmployeeDetailsPage extends React.Component {
   constructor(props, context) {
@@ -34,14 +34,14 @@ EmployeeDetailsPage.propTypes = {
 
 function mapStateToProps(state, ownProps) { // eslint-disable-line no-unused-vars
   const employee = {
-    code       : "",
-    name       : "",
-    dateOfBirth: "",
-    sex        : "",
-    email      : "",
-    phone      : "",
-    status     : "",
-    userId     : ""
+    code       : '',
+    name       : '',
+    dateOfBirth: '',
+    sex        : '',
+    email      : '',
+    phone      : '',
+    status     : '',
+    userId     : ''
   };
   return { employee: employee };
 }

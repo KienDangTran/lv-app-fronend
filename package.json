@@ -20,6 +20,7 @@
     "test:watch": "npm run test -- --watch"
   },
   "dependencies": {
+    "axios": "0.15.3",
     "bootstrap": "3.3.7",
     "jquery": "3.1.1",
     "object-assign": "4.1.0",

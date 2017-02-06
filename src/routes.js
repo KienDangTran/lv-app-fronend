@@ -6,50 +6,30 @@ import HomePage from "./components/HomePage";
 import AboutPage from "./components/AboutPage";
 import NotFoundPage from "./components/NotFoundPage";
 import LoginPage from "./components/LoginPage";
-import EmployeeSummaryPage from "./containers/employee/EmployeeSummaryPage";
-import EmployeeDetailsPage from "./containers/employee/EmployeeDetailsPage";
-import UserSummaryPage from "./containers/user/UserSummaryPage";
+import EmployeeSummaryPage from "./components/employee/containers/EmployeeSummaryPage";
+import EmployeeDetailsPage from "./components/employee/containers/EmployeeDetailsPage";
+import UserSummaryPage from "./components/user/containers/UserSummaryPage";
 
 export default (
   <Route path={ navPaths.APP } component={ App }>
     <IndexRoute component={ HomePage }/>
 
-    <Route
-      path="/login"
-      component={ LoginPage }
-    />
+    <Route path="/login" component={ LoginPage }/>
 
-    <Route
-      path="*"
-      component={ NotFoundPage }
-    />
+    <Route path="*" component={ NotFoundPage }/>
 
-    <Route
-      path={ navPaths.ABOUT}
-      component={ AboutPage }
-    />
+    <Route path={ navPaths.ABOUT} component={ AboutPage }/>
 
-    <Route
-      path={ navPaths.EMPLOYEE }
-      component={ EmployeeSummaryPage }
-      onEnter={ requireAuthentication }
-    >
-      <Route
-        path={ navPaths.EMPLOYEE_DETAILS }
-        component={ EmployeeDetailsPage }
-      />
+    <Route path={ navPaths.EMPLOYEE } component={ EmployeeSummaryPage } onEnter={ requireAuthentication }>
+      <Route path={ navPaths.EMPLOYEE_DETAILS } component={ EmployeeDetailsPage }/>
     </Route>
 
-    <Route
-      path={ navPaths.USER }
-      component={ UserSummaryPage }
-      onEnter={ requireAuthentication }
-    />
+    <Route path={ navPaths.USER } component={ UserSummaryPage } onEnter={ requireAuthentication }/>
   </Route>
 );
 
 function requireAuthentication(nextState, replace) {
-  if (!sessionStorage.getItem("jwt")) {
+  if (!sessionStorage.getItem('jwt')) {
     replace(
       {
         pathname: navPaths.APP,
