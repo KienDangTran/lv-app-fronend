@@ -1,4 +1,4 @@
-export const LOGIN = '/login';
+export const LOGIN = '/auth/login';
 
 export const FETCH_EMPLOYEES = '/employee/fetch';
 export const COUNT_EMPLOYEES = '/employee/count';

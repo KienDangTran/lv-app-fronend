@@ -17,8 +17,8 @@ class Header extends React.Component {
       if (this.props.isAuthenticated) {
         return (
           <Nav pullRight>
-            <NavItem href="#">Welcome, Admin! <Glyphicon glyph="user"/></NavItem>
-            <NavItem href="#"><Glyphicon glyph="log-out"/></NavItem>
+            <NavItem href="#">Welcome, Admin! <Glyphicon glyph="user" /></NavItem>
+            <NavItem href="#"><Glyphicon glyph="log-out" /></NavItem>
           </Nav>
         );
       }
@@ -86,7 +86,7 @@ class Header extends React.Component {
         <Navbar.Header>
           <Navbar.Brand>
             <a className="navbar-brand" href={ path.APP }>
-              <img alt="Brand" src={ require("../../images/branch.png") }/>
+              <img alt="Brand" src={ require("../../images/branch.png") } />
             </a>
           </Navbar.Brand>
           <Navbar.Toggle />
@@ -102,9 +102,9 @@ class Header extends React.Component {
 
 Header.propTypes = {
   isAuthenticated: React.PropTypes.bool.isRequired,
-  router         : React.PropTypes.shape(
+  router: React.PropTypes.shape(
     {
-      push    : React.PropTypes.func.isRequired,
+      push: React.PropTypes.func.isRequired,
       isActive: React.PropTypes.func.isRequired
     }
   ).isRequired

@@ -5,24 +5,29 @@ import axios from "axios";
  * @type {Symbol}
  */
 export const CALL_API = Symbol("Call API");
-export const BASE_URL = "localhost:8080/api/";
+export const BASE_URL = "http://127.0.0.1:8080/api/";
 
 /**
  *
  * Fetches an API response and normalizes the result JSON according to schema.
  * This makes every API response have the same shape, regardless of how nested it was.
  * @param endpoint - the server URL that will be used for the request
- * @param requestConfig - https://github.com/mzabriskie/axios#request-config
+ * @param additionalConfig - https://github.com/mzabriskie/axios#request-config
  * @returns {Promise.<T>|Promise<R>}
  */
-export const callApi = (endpoint, requestConfig) => {
-  return axios(
-    endpoint,
+export const callApi = (endpoint, method, additionalConfig) => {
+  const instance = axios.create(
     {
-      ...requestConfig,
-      baseURL: BASE_URL
+      baseURL: BASE_URL,
+      ...additionalConfig,
     }
   );
+  switch (method.toLowerCase()) {
+    case "post":
+      return instance.post(endpoint);
+    default:
+      return instance.get(endpoint);
+  }
 };
 
 /**
@@ -36,8 +41,8 @@ export default store => next => action => {
     return next(action);
   }
 
-  let { endpoint }               = callAPI;
-  const { requestConfig, types } = callAPI;
+  let { endpoint }                          = callAPI;
+  const { method, additionalConfig, types } = callAPI;
 
   if (typeof endpoint === 'function') {
     endpoint = endpoint(store.getState());
@@ -63,7 +68,7 @@ export default store => next => action => {
 
   next(actionWith({ type: requestType }));
 
-  return callApi(endpoint, requestConfig)
-    .then(response => next(actionWith({ type: successType, payload: response })))
-    .catch(error => actionWith({ type: failureType, payload: error }));
+  return callApi(endpoint, method, additionalConfig)
+  .then(response => next(actionWith({ type: successType, payload: response })))
+  .catch(error => actionWith({ type: failureType, payload: error }));
 };

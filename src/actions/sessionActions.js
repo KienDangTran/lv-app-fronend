@@ -10,10 +10,10 @@ export const login = (username, password) => {
     dispatch(
       {
         [CALL_API]: {
-          types        : [LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE],
-          endpoint     : endpoints.LOGIN,
-          requestConfig: {
-            method      : 'post',
+          types           : [LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE],
+          endpoint        : endpoints.LOGIN,
+          method          : 'post',
+          additionalConfig: {
             headers     : {
               'X-Requested-With': 'XMLHttpRequest',
               'Content-Type'    : 'application/json',

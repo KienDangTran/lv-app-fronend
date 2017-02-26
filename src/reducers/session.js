@@ -1,6 +1,6 @@
 import initialState from "./initialState";
 import * as loginActionTypes from "../actions/sessionActions";
-import { browserHistory } from 'react-router';
+import { browserHistory } from "react-router";
 
 const session = (state = initialState.session, action) => {
   switch (action.type) {
@@ -16,6 +16,8 @@ const session = (state = initialState.session, action) => {
         ...state,
         isAuthenticated: false
       };
+    default:
+      return state;
   }
 };
 

@@ -7,9 +7,9 @@ import EmployeeForm from "../presenters/EmployeeForm";
 class EmployeeDetailsPage extends React.Component {
   constructor(props, context) {
     super(props, context);
-    this.state    = {
+    this.state = {
       employee: Object.assign({}, this.props.employee),
-      errors  : {}
+      errors: {}
     };
     this.onChange = this.onChange.bind(this);
   }
@@ -23,7 +23,7 @@ class EmployeeDetailsPage extends React.Component {
       <EmployeeForm
         employee={ this.state.employee }
         helpText={ this.state.errors }
-        onChange={ this.onChange }/>
+        onChange={ this.onChange } />
     );
   }
 }
@@ -34,14 +34,14 @@ EmployeeDetailsPage.propTypes = {
 
 function mapStateToProps(state, ownProps) { // eslint-disable-line no-unused-vars
   const employee = {
-    code       : '',
-    name       : '',
+    code: '',
+    name: '',
     dateOfBirth: '',
-    sex        : '',
-    email      : '',
-    phone      : '',
-    status     : '',
-    userId     : ''
+    sex: '',
+    email: '',
+    phone: '',
+    status: '',
+    userId: ''
   };
   return { employee: employee };
 }

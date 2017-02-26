@@ -7,13 +7,13 @@ import { PageHeader, FormGroup, ControlLabel, FormControl, Checkbox, Button } fr
 class LoginPage extends React.Component {
   constructor(props, context) {
     super(props, context);
-    this.state             = {
+    this.state = {
       username: '',
       password: ''
     };
     this.onUsernameChanged = this.onUsernameChanged.bind(this);
     this.onPasswordChanged = this.onPasswordChanged.bind(this);
-    this.onSubmit          = this.onSubmit.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   onUsernameChanged(e) {

@@ -12,19 +12,19 @@ import UserSummaryPage from "./components/user/containers/UserSummaryPage";
 
 export default (
   <Route path={ navPaths.APP } component={ App }>
-    <IndexRoute component={ HomePage }/>
+    <IndexRoute component={ HomePage } />
 
-    <Route path="/login" component={ LoginPage }/>
+    <Route path="/login" component={ LoginPage } />
 
-    <Route path="*" component={ NotFoundPage }/>
+    <Route path="*" component={ NotFoundPage } />
 
-    <Route path={ navPaths.ABOUT} component={ AboutPage }/>
+    <Route path={ navPaths.ABOUT } component={ AboutPage } />
 
     <Route path={ navPaths.EMPLOYEE } component={ EmployeeSummaryPage } onEnter={ requireAuthentication }>
-      <Route path={ navPaths.EMPLOYEE_DETAILS } component={ EmployeeDetailsPage }/>
+      <Route path={ navPaths.EMPLOYEE_DETAILS } component={ EmployeeDetailsPage } />
     </Route>
 
-    <Route path={ navPaths.USER } component={ UserSummaryPage } onEnter={ requireAuthentication }/>
+    <Route path={ navPaths.USER } component={ UserSummaryPage } onEnter={ requireAuthentication } />
   </Route>
 );
 
@@ -33,7 +33,7 @@ function requireAuthentication(nextState, replace) {
     replace(
       {
         pathname: navPaths.APP,
-        state   : { nextPathname: nextState.location.pathname }
+        state: { nextPathname: nextState.location.pathname }
       }
     );
   }
