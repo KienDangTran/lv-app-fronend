@@ -1,9 +1,9 @@
-import React from "react";
-import { bindActionCreators } from "redux";
-import { withRouter } from "react-router";
-import { connect } from "react-redux";
-import * as employeeActions from "../../../actions/employeeActions";
-import EmployeeList from "../presenters/EmployeeList";
+import React from 'react';
+import { bindActionCreators } from 'redux';
+import { withRouter } from 'react-router';
+import { connect } from 'react-redux';
+import * as employeeActions from '../../../actions/employeeActions';
+import EmployeeList from '../presenters/EmployeeList';
 import {
   PageHeader,
   Modal,
@@ -13,7 +13,7 @@ import {
   Pagination,
   DropdownButton,
   MenuItem
-} from "react-bootstrap";
+} from 'react-bootstrap';
 
 class EmployeeSummaryPage extends React.Component {
   constructor(props, context) {
@@ -142,10 +142,13 @@ EmployeeSummaryPage.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  let {
+  const {
     entities: { employee },
-    pagination: { employee: { activePage, pageSize, pageCount, fetching, pages } }
+    pagination: { employee: { pageCount, fetching, pages } }
   } = state;
+
+  let activePage = state.pagination.employee.activePage;
+  let pageSize = state.pagination.employee.pageSize;
 
   if (ownProps && ownProps.location.query) {
     activePage = ownProps.location.query.pageNo ? parseInt(ownProps.location.query.pageNo) : activePage;

@@ -1,4 +1,4 @@
-import { schema } from "normalizr";
+import { schema } from 'normalizr';
 
 /*
  We use this Normalizr schemas to transform API responses from a nested form
@@ -16,13 +16,13 @@ import { schema } from "normalizr";
  */
 
 const employee = new schema.Entity(
-  "employee",
+  'employee',
   {},
   { idAttribute: employee => employee.code.toUpperCase() }
 );
 
 const user = new schema.Entity(
-  "user",
+  'user',
   {},
   { idAttribute: user => user.userId.toUpperCase() }
 );

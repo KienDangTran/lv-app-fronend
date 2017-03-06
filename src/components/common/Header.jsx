@@ -1,8 +1,8 @@
-import React from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
-import { Navbar, Nav, NavItem, Glyphicon } from "react-bootstrap";
-import * as path from "../../constants/navPaths";
+import React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { Navbar, Nav, NavItem, Glyphicon } from 'react-bootstrap';
+import * as path from '../../constants/navPaths';
 
 class Header extends React.Component {
   render() {
@@ -86,7 +86,7 @@ class Header extends React.Component {
         <Navbar.Header>
           <Navbar.Brand>
             <a className="navbar-brand" href={ path.APP }>
-              <img alt="Brand" src={ require("../../images/branch.png") } />
+              <img alt="Brand" src={ require('../../images/branch.png') } />
             </a>
           </Navbar.Brand>
           <Navbar.Toggle />

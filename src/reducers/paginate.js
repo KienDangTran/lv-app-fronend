@@ -1,4 +1,4 @@
-import initialState from "./initialState";
+import initialState from './initialState';
 
 /**
  * Creates a reducer managing pagination, given the action types to handle,
@@ -7,78 +7,89 @@ import initialState from "./initialState";
  * @param schemaKey
  * @returns {function(*=, *=)}
  */
-const paginate = ({ types, schemaKey }) => {
-  if (!Array.isArray(types) || types.length < 3) {
-    throw new Error("Expected types to be an array of three elements.");
+const paginate = ({
+  types,
+  schemaKey
+}) => {
+  if(!Array.isArray(types) || types.length < 3) {
+    throw new Error('Expected types to be an array of three elements.');
   }
-  if (!types.every(t => typeof t === "string")) {
-    throw new Error("Expected types to be strings.");
+  if(!types.every(t => typeof t === 'string')) {
+    throw new Error('Expected types to be strings.');
   }
-  if (typeof schemaKey !== "string") {
-    throw new Error("Expected schemaKey to be a string.");
+  if(typeof schemaKey !== 'string') {
+    throw new Error('Expected schemaKey to be a string.');
   }
 
-  const [ requestType, successType, failureType, countType ] = types;
+  const [requestType, successType, failureType, countType] = types;
 
   const updatePagination = (
     state = initialState.pagination[schemaKey],
     action
   ) => {
-    switch (action.type) {
+    switch(action.type) {
       case requestType:
-        return {
-          ...state,
-          activePage: action.pageNo,
-          pageSize  : action.pageSize,
-          fetching  : true
-        };
+        {
+          return {
+            ...state,
+            activePage: action.pageNo,
+            pageSize: action.pageSize,
+            fetching: true
+          };
+        }
       case successType:
-        return {
-          ...state,
-          activePage: action.pageNo,
-          pageSize  : action.pageSize,
-          fetching  : false,
-          pages     : {
-            ...state.pages,
+        {
+          return {
+            ...state,
+            activePage: action.pageNo,
+            pageSize: action.pageSize,
+            fetching: false,
+            pages: {
+              ...state.pages,
             [action.pageNo]: {
-              ids: action.payload.result
+                ids: action.payload.result
+              }
             }
-          }
-        };
+          };
+        }
       case failureType:
-        return {
-          ...state,
-          fetching: false,
-          pages   : {
-            ...state.pages,
-            activePage     : action.pageNo,
-            pageSize       : action.pageSize,
-            fetching       : false,
+        {
+          return {
+            ...state,
+            fetching: false,
+            pages: {
+              ...state.pages,
+              activePage: action.pageNo,
+              pageSize: action.pageSize,
+              fetching: false,
             [action.pageNo]: {
-              error: action.payload.error
+                error: action.payload.error
+              }
             }
-          }
-        };
+          };
+        }
       case countType:
-        const pageSize = state.pageSize;
-        return {
-          ...state,
-          pageCount: Math.ceil(action.payload / pageSize)
-        };
+        {
+          const pageSize = state.pageSize;
+          return {
+            ...state,
+            pageCount: Math.ceil(action.payload / pageSize)
+          };
+        }
       default:
         return state;
     }
   };
 
-  return (state = {}, action) => {
+  return(state = {}, action) => {
     // Update pagination by key
-    switch (action.type) {
+    switch(action.type) {
       case requestType:
       case successType:
       case failureType:
       case countType:
-        if (typeof schemaKey !== "string") {
-          throw new Error("Expected key to be a string.");
+        if(typeof schemaKey !== 'string') {
+          throw new Error('Expected key to be a string.');
         }
         return updatePagination(state, action);
       default:

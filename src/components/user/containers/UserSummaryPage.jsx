@@ -1,9 +1,9 @@
-import React from "react";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
-import * as userActions from "../../../actions/userActions";
-import UserList from "../../../components/user/presenters/UserList";
+import React from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import * as userActions from '../../../actions/userActions';
+import UserList from '../../../components/user/presenters/UserList';
 import {
   PageHeader,
   Modal,
@@ -13,7 +13,7 @@ import {
   Pagination,
   DropdownButton,
   MenuItem
-} from "react-bootstrap";
+} from 'react-bootstrap';
 
 class UserSummaryPage extends React.Component {
   constructor(props, context) {
@@ -142,11 +142,13 @@ UserSummaryPage.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  let {
+  const {
     entities: { user },
-    pagination: { user: { activePage, pageSize, pageCount, fetching, pages } }
+    pagination: { user: { pageCount, fetching, pages } }
   } = state;
 
+  let activePage = state.pagination.user.activePage;
+  let pageSize = state.pagination.user.pageSize;
   if (ownProps && ownProps.location.query) {
     activePage = ownProps.location.query.pageNo ? parseInt(ownProps.location.query.pageNo) : activePage;
     pageSize = ownProps.location.query.pageSize ? parseInt(ownProps.location.query.pageSize) : pageSize;

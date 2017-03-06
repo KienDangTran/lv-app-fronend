@@ -1,16 +1,16 @@
-import React from "react";
-import { render } from "react-dom";
-import { Provider } from "react-redux";
-import { Router, browserHistory } from "react-router";
-import { syncHistoryWithStore } from "react-router-redux";
-import routes from "./routes";
-import configureStore from "./store/configureStore";
-import initialState from "./reducers/initialState";
+import React from 'react';
+import { render } from 'react-dom';
+import { Provider } from 'react-redux';
+import { Router, browserHistory } from 'react-router';
+import { syncHistoryWithStore } from 'react-router-redux';
+import routes from './routes';
+import configureStore from './store/configureStore';
+import initialState from './reducers/initialState';
 
-import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import "../node_modules/bootstrap/dist/js/bootstrap.min";
-import "./styles/styles.scss";
-require("./favicon.ico"); // Tell webpack to load favicon.ico
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import '../node_modules/bootstrap/dist/js/bootstrap.min';
+import './styles/styles.scss';
+require('./favicon.ico'); // Tell webpack to load favicon.ico
 
 const store = configureStore(initialState);
 

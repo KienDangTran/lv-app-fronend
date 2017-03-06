@@ -1,9 +1,11 @@
-import initialState from "./initialState";
-import * as loginActionTypes from "../actions/sessionActions";
-import { browserHistory } from "react-router";
+import initialState from './initialState';
+import * as loginActionTypes from '../actions/sessionActions';
+import {
+  browserHistory
+} from 'react-router';
 
 const session = (state = initialState.session, action) => {
-  switch (action.type) {
+  switch(action.type) {
     case loginActionTypes.LOGIN_SUCCESS:
       sessionStorage.setItem('jwt', action.payload);
       browserHistory.push('/');

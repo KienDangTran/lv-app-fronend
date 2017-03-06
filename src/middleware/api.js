@@ -1,11 +1,11 @@
-import axios from "axios";
+import axios from 'axios';
 
 /**
  * Action key that carries API call info interpreted by this Redux middleware.
  * @type {Symbol}
  */
-export const CALL_API = Symbol("Call API");
-export const BASE_URL = "http://127.0.0.1:8080/api/";
+export const CALL_API = Symbol('Call API');
+export const BASE_URL = 'http://127.0.0.1:8080/api/';
 
 /**
  *
@@ -16,14 +16,12 @@ export const BASE_URL = "http://127.0.0.1:8080/api/";
  * @returns {Promise.<T>|Promise<R>}
  */
 export const callApi = (endpoint, method, additionalConfig) => {
-  const instance = axios.create(
-    {
-      baseURL: BASE_URL,
-      ...additionalConfig,
-    }
-  );
-  switch (method.toLowerCase()) {
-    case "post":
+  const instance = axios.create({
+    baseURL: BASE_URL,
+    ...additionalConfig,
+  });
+  switch(method.toLowerCase()) {
+    case 'post':
       return instance.post(endpoint);
     default:
       return instance.get(endpoint);
@@ -37,24 +35,30 @@ export const callApi = (endpoint, method, additionalConfig) => {
  */
 export default store => next => action => {
   const callAPI = action[CALL_API];
-  if (typeof callAPI === 'undefined') {
+  if(typeof callAPI === 'undefined') {
     return next(action);
   }
 
-  let { endpoint }                          = callAPI;
-  const { method, additionalConfig, types } = callAPI;
+  let {
+    endpoint
+  } = callAPI;
+  const {
+    method,
+    additionalConfig,
+    types
+  } = callAPI;
 
-  if (typeof endpoint === 'function') {
+  if(typeof endpoint === 'function') {
     endpoint = endpoint(store.getState());
   }
 
-  if (typeof endpoint !== 'string') {
+  if(typeof endpoint !== 'string') {
     throw new Error('Specify a string endpoint URL.');
   }
-  if (!Array.isArray(types) || types.length !== 3) {
+  if(!Array.isArray(types) || types.length !== 3) {
     throw new Error('Expected an array of three action types.');
   }
-  if (!types.every(type => typeof type === 'string')) {
+  if(!types.every(type => typeof type === 'string')) {
     throw new Error('Expected action types to be strings.');
   }
 
@@ -64,11 +68,19 @@ export default store => next => action => {
     return finalAction;
   };
 
-  const [ requestType, successType, failureType ] = types;
+  const [requestType, successType, failureType] = types;
 
-  next(actionWith({ type: requestType }));
+  next(actionWith({
+    type: requestType
+  }));
 
   return callApi(endpoint, method, additionalConfig)
-  .then(response => next(actionWith({ type: successType, payload: response })))
-  .catch(error => actionWith({ type: failureType, payload: error }));
+    .then(response => next(actionWith({
+      type: successType,
+      payload: response
+    })))
+    .catch(error => actionWith({
+      type: failureType,
+      payload: error
+    }));
 };

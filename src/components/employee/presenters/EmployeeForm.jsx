@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   PageHeader,
   Panel,
@@ -13,7 +13,7 @@ import {
   ButtonToolbar,
   Button,
   Glyphicon
-} from "react-bootstrap";
+} from 'react-bootstrap';
 
 const EmployeeForm = ({ employee, onChange, validationState, helpTexts, disabled, readOnly }) => {
 

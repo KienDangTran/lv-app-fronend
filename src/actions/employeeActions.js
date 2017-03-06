@@ -1,8 +1,8 @@
 import {
   CALL_API
-} from "../middleware/api";
-import * as endpoint from "../constants/endpoints";
-import schemas from "../constants/schemas";
+} from '../middleware/api';
+import * as endpoint from '../constants/endpoints';
+import schemas from '../constants/schemas';
 
 export const FETCH_EMPLOYEES = 'FETCH_EMPLOYEES';
 export const FETCH_EMPLOYEES_SUCCESS = 'FETCH_EMPLOYEES_SUCCESS';

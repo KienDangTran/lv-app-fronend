@@ -1,14 +1,14 @@
-import React from "react";
-import { Route, IndexRoute } from "react-router";
-import * as navPaths from "./constants/navPaths";
-import App from "./components/App";
-import HomePage from "./components/HomePage";
-import AboutPage from "./components/AboutPage";
-import NotFoundPage from "./components/NotFoundPage";
-import LoginPage from "./components/LoginPage";
-import EmployeeSummaryPage from "./components/employee/containers/EmployeeSummaryPage";
-import EmployeeDetailsPage from "./components/employee/containers/EmployeeDetailsPage";
-import UserSummaryPage from "./components/user/containers/UserSummaryPage";
+import React from 'react';
+import { Route, IndexRoute } from 'react-router';
+import * as navPaths from './constants/navPaths';
+import App from './components/App';
+import HomePage from './components/HomePage';
+import AboutPage from './components/AboutPage';
+import NotFoundPage from './components/NotFoundPage';
+import LoginPage from './components/LoginPage';
+import EmployeeSummaryPage from './components/employee/containers/EmployeeSummaryPage';
+import EmployeeDetailsPage from './components/employee/containers/EmployeeDetailsPage';
+import UserSummaryPage from './components/user/containers/UserSummaryPage';
 
 export default (
   <Route path={ navPaths.APP } component={ App }>

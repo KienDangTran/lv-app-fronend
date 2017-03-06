@@ -1,8 +1,8 @@
-import React from "react";
-import Header from "./common/Header";
-import { Grid, Row, Col } from "react-bootstrap";
+import React from 'react';
+import Header from './common/Header';
+import { Grid, Row, Col } from 'react-bootstrap';
 
-window.$ = window.jQuery = require("jquery");
+window.$ = window.jQuery = require('jquery');
 
 class App extends React.Component {
   render() {

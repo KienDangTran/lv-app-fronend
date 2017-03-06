@@ -1,5 +1,5 @@
-import React from "react";
-import { Table, Glyphicon, Button } from "react-bootstrap";
+import React from 'react';
+import { Table, Glyphicon, Button } from 'react-bootstrap';
 
 const UserList = ({ users, deleteRow, disabled }) => {
   return (

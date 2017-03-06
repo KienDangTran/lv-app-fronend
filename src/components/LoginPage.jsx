@@ -1,8 +1,8 @@
-import React from "react";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import * as loginActions from "../actions/sessionActions";
-import { PageHeader, FormGroup, ControlLabel, FormControl, Checkbox, Button } from "react-bootstrap";
+import React from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as loginActions from '../actions/sessionActions';
+import { PageHeader, FormGroup, ControlLabel, FormControl, Checkbox, Button } from 'react-bootstrap';
 
 class LoginPage extends React.Component {
   constructor(props, context) {
