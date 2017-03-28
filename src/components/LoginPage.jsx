@@ -2,7 +2,7 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as loginActions from '../actions/sessionActions';
-import { PageHeader, FormGroup, ControlLabel, FormControl, Checkbox, Button } from 'react-bootstrap';
+import { PageHeader, FormGroup, ControlLabel, FormControl, Checkbox, Button, Alert } from 'react-bootstrap';
 
 class LoginPage extends React.Component {
   constructor(props, context) {
@@ -38,57 +38,67 @@ class LoginPage extends React.Component {
 
   render() {
     return (
-      <div className="jumbotron">
-        <PageHeader>Login</PageHeader>
+      <div>
+        <div className="jumbotron">
+          <PageHeader>Login</PageHeader>
 
-        <FormGroup controlId="username">
-          <ControlLabel htmlFor="username">Username</ControlLabel>
-          <FormControl
-            type="text"
-            placeholder="Username"
-            name="username"
-            onChange={ e => this.onUsernameChanged(e) }
-          />
-        </FormGroup>
+          <FormGroup controlId="username">
+            <ControlLabel htmlFor="username">Username</ControlLabel>
+            <FormControl
+              type="text"
+              placeholder="Username"
+              name="username"
+              onChange={ this.onUsernameChanged }
+            />
+          </FormGroup>
 
-        <FormGroup controlId="password">
-          <ControlLabel htmlFor="password">Password</ControlLabel>
-          <FormControl
-            type="password"
-            placeholder="Password"
-            name="password"
-            onChange={ e => this.onPasswordChanged(e) }
-          />
-        </FormGroup>
+          <FormGroup controlId="password">
+            <ControlLabel htmlFor="password">Password</ControlLabel>
+            <FormControl
+              type="password"
+              placeholder="Password"
+              name="password"
+              onChange={ this.onPasswordChanged }
+            />
+          </FormGroup>
 
-        <FormGroup controlId="rememberMe">
-          <Checkbox id="rememberMe">
-            Remember me
+          <FormGroup controlId="rememberMe">
+            <Checkbox id="rememberMe">
+              Remember me
           </Checkbox>
-        </FormGroup>
+          </FormGroup>
 
-        <Button
-          id="submit"
-          bsStyle="primary"
-          className="pull-left"
-          onClick={ this.onSubmit }
-        >
-          Login
+          <Button
+            id="submit"
+            bsStyle="primary"
+            className="pull-left"
+            onClick={ this.onSubmit }
+          >
+            Login
         </Button>
 
-        <Button
-          id="forgotPassword"
-          bsStyle="link"
-          className="pull-right"
-        >
-          Forgot Password
-        </Button>
+          <Button
+            id="forgotPassword"
+            bsStyle="link"
+            className="pull-right"
+          >
+            Forgot Password
+          </Button>
+        </div>
+        {
+          this.props.error
+            ? <Alert bsStyle="danger">
+              { this.props.error }
+            </Alert>
+            : undefined
+        }
       </div>
     );
   }
 }
 
 LoginPage.propTypes = {
+  error: React.PropTypes.string,
   actions: React.PropTypes.shape(
     {
       login: React.PropTypes.func.isRequired
@@ -97,7 +107,9 @@ LoginPage.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  return state;
+  return {
+    error: state.session.error
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {

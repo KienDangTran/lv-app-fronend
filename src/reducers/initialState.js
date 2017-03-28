@@ -1,38 +1,40 @@
 export default {
-  session   : {
-    isAuthenticated: !!sessionStorage.getItem('jwt')
+  session: {
+    isAuthenticated: !!(localStorage.getItem('token')),
+    fetching: false,
+    error: ''
   },
-  entities  : {
+  entities: {
     employee: {},
-    user    : {}
+    user: {}
   },
   pagination: {
     employee: {
       activePage: 1,
-      pageSize  : 10,
-      pageCount : 1,
-      fetching  : false,
-      pages     : {
+      pageSize: 10,
+      pageCount: 1,
+      fetching: false,
+      pages: {
         1: {
-          ids  : [],
+          ids: [],
           error: {
             message: '',
-            status : 500
+            status: 500
           }
         }
       }
     },
-    user    : {
+    user: {
       activePage: 1,
-      pageSize  : 10,
-      pageCount : 1,
-      fetching  : false,
-      pages     : {
+      pageSize: 10,
+      pageCount: 1,
+      fetching: false,
+      pages: {
         1: {
-          ids  : [],
+          ids: [],
           error: {
             message: '',
-            status : 500
+            status: 500
           }
         }
       }

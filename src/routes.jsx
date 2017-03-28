@@ -1,40 +1,39 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
-import * as navPaths from './constants/navPaths';
+import * as nav from './constants/navPaths';
 import App from './components/App';
 import HomePage from './components/HomePage';
 import AboutPage from './components/AboutPage';
 import NotFoundPage from './components/NotFoundPage';
-import LoginPage from './components/LoginPage';
 import EmployeeSummaryPage from './components/employee/containers/EmployeeSummaryPage';
 import EmployeeDetailsPage from './components/employee/containers/EmployeeDetailsPage';
 import UserSummaryPage from './components/user/containers/UserSummaryPage';
 
 export default (
-  <Route path={ navPaths.APP } component={ App }>
+  <Route path={ nav.APP } component={ App }>
     <IndexRoute component={ HomePage } />
 
-    <Route path="/login" component={ LoginPage } />
-
-    <Route path="*" component={ NotFoundPage } />
-
-    <Route path={ navPaths.ABOUT } component={ AboutPage } />
-
-    <Route path={ navPaths.EMPLOYEE } component={ EmployeeSummaryPage } onEnter={ requireAuthentication }>
-      <Route path={ navPaths.EMPLOYEE_DETAILS } component={ EmployeeDetailsPage } />
+    <Route onEnter={ requireAuthentication }>
+      <Route path={ nav.ABOUT } component={ AboutPage } />
+      <Route path={ nav.EMPLOYEE } component={ EmployeeSummaryPage }>
+        <Route path={ nav.EMPLOYEE_DETAILS } component={ EmployeeDetailsPage } />
+      </Route>
+      <Route path={ nav.USER } component={ UserSummaryPage } />
     </Route>
 
-    <Route path={ navPaths.USER } component={ UserSummaryPage } onEnter={ requireAuthentication } />
+    <Route path="*" component={ NotFoundPage } />
   </Route>
 );
 
 function requireAuthentication(nextState, replace) {
-  if (!sessionStorage.getItem('jwt')) {
+  if (!localStorage.getItem('token')) {
     replace(
       {
-        pathname: navPaths.APP,
+        pathname: nav.APP,
         state: { nextPathname: nextState.location.pathname }
       }
     );
+  } else {
+    replace(null, nav.APP);
   }
 }
