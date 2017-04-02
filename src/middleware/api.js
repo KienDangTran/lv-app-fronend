@@ -17,7 +17,7 @@ export const BASE_URL = 'http://127.0.0.1:8080/api/';
  */
 export const callApi = (endpoint, method, additionalConfig) => {
   return axios({
-    method: method,
+    method: method ? method : 'get',
     url: endpoint,
     baseURL: BASE_URL,
     ...additionalConfig
@@ -71,12 +71,12 @@ export default store => next => action => {
   }));
 
   return callApi(endpoint, method, additionalConfig)
-    .then(response => next(actionWith({
+    .then(data => next(actionWith({
       type: successType,
-      payload: response
+      payload: data
     })))
-    .catch(error => next(actionWith({
+    .catch(data => next(actionWith({
       type: failureType,
-      payload: error
+      payload: data
     })));
 };

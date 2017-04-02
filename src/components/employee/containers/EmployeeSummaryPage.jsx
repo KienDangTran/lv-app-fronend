@@ -147,15 +147,15 @@ const mapStateToProps = (state, ownProps) => {
     pagination: { employee: { pageCount, fetching, pages } }
   } = state;
 
-  let activePage = state.pagination.employee.activePage;
-  let pageSize = state.pagination.employee.pageSize;
+  const activePage = ownProps.location.query.pageNo
+    ? parseInt(ownProps.location.query.pageNo)
+    : state.pagination.employee.activePage;
 
-  if (ownProps && ownProps.location.query) {
-    activePage = ownProps.location.query.pageNo ? parseInt(ownProps.location.query.pageNo) : activePage;
-    pageSize = ownProps.location.query.pageSize ? parseInt(ownProps.location.query.pageSize) : pageSize;
-  }
+  const pageSize = ownProps.location.query.pageSize
+    ? parseInt(ownProps.location.query.pageSize)
+    : state.pagination.employee.pageSize;
 
-  const employees = pages[activePage] ? pages[activePage].ids.map(id => employee[id]) : [];
+  const employees = pages[activePage] ? pages[activePage].ids.map(employeeCode => employee[employeeCode]) : [];
 
   return {
     activePage,

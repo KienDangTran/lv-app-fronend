@@ -10,15 +10,15 @@ export const FETCH_EMPLOYEES_FAILURE = 'FETCH_EMPLOYEES_FAILURE';
 
 const shouldFetchEmployees = (state, pageNo, pageSize) => {
   const employeePagination = state.pagination[schemas.EMPLOYEE.key];
-  if(employeePagination.fetching) {
+  if (employeePagination.fetching) {
     return false;
-  } else if(!employeePagination) {
+  } else if (!employeePagination) {
     return true;
-  } else if(!employeePagination.pages) {
+  } else if (!employeePagination.pages) {
     return true;
-  } else if(!employeePagination.pages[pageNo]) {
+  } else if (!employeePagination.pages[pageNo]) {
     return true;
-  } else if(employeePagination.pageSize !== pageSize) {
+  } else if (employeePagination.pageSize !== pageSize) {
     return true;
   } else {
     return !employeePagination.pages[pageNo].ids || employeePagination.pages[pageNo].ids.length === 0;
@@ -26,14 +26,19 @@ const shouldFetchEmployees = (state, pageNo, pageSize) => {
 };
 
 export const fetchEmployees = (pageNo, pageSize) => {
-  return(dispatch, getState) => {
-    if(shouldFetchEmployees(getState(), pageNo, pageSize)) {
+  return (dispatch, getState) => {
+    if (shouldFetchEmployees(getState(), pageNo, pageSize)) {
       return dispatch({
         pageNo,
         pageSize,
         [CALL_API]: {
           types: [FETCH_EMPLOYEES, FETCH_EMPLOYEES_SUCCESS, FETCH_EMPLOYEES_FAILURE],
           endpoint: `${endpoint.FETCH_EMPLOYEES}?pageNo=${pageNo}&pageSize=${pageSize}`,
+          additionalConfig: {
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+          },
           schema: schemas.EMPLOYEE_ARRAY
         }
       });
@@ -67,11 +72,16 @@ export const COUNT_EMPLOYEES_SUCCESS = 'COUNT_EMPLOYEES_SUCCESS';
 export const COUNT_EMPLOYEE_FAILURE = 'COUNT_EMPLOYEE_FAILURE';
 
 export const countEmployees = () => {
-  return(dispatch) => {
+  return (dispatch) => {
     return dispatch({
       [CALL_API]: {
         types: [COUNT_EMPLOYEES, COUNT_EMPLOYEES_SUCCESS, COUNT_EMPLOYEE_FAILURE],
-        endpoint: endpoint.COUNT_EMPLOYEES
+        endpoint: endpoint.COUNT_EMPLOYEES,
+        additionalConfig: {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        }
       }
     });
   };

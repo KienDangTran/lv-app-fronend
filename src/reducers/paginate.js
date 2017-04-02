@@ -11,13 +11,13 @@ const paginate = ({
   types,
   schemaKey
 }) => {
-  if(!Array.isArray(types) || types.length < 3) {
+  if (!Array.isArray(types) || types.length < 3) {
     throw new Error('Expected types to be an array of three elements.');
   }
-  if(!types.every(t => typeof t === 'string')) {
+  if (!types.every(t => typeof t === 'string')) {
     throw new Error('Expected types to be strings.');
   }
-  if(typeof schemaKey !== 'string') {
+  if (typeof schemaKey !== 'string') {
     throw new Error('Expected schemaKey to be a string.');
   }
 
@@ -27,7 +27,7 @@ const paginate = ({
     state = initialState.pagination[schemaKey],
     action
   ) => {
-    switch(action.type) {
+    switch (action.type) {
       case requestType:
         {
           return {
@@ -46,8 +46,8 @@ const paginate = ({
             fetching: false,
             pages: {
               ...state.pages,
-            [action.pageNo]: {
-                ids: action.payload.result
+              [action.pageNo]: {
+                ids: action.payload.data.response
               }
             }
           };
@@ -62,8 +62,8 @@ const paginate = ({
               activePage: action.pageNo,
               pageSize: action.pageSize,
               fetching: false,
-            [action.pageNo]: {
-                error: action.payload.error
+              [action.pageNo]: {
+                error: action.payload.response.data
               }
             }
           };
@@ -73,7 +73,7 @@ const paginate = ({
           const pageSize = state.pageSize;
           return {
             ...state,
-            pageCount: Math.ceil(action.payload / pageSize)
+            pageCount: Math.ceil(action.payload.data.response / pageSize)
           };
         }
       default:
@@ -81,14 +81,14 @@ const paginate = ({
     }
   };
 
-  return(state = {}, action) => {
+  return (state = {}, action) => {
     // Update pagination by key
-    switch(action.type) {
+    switch (action.type) {
       case requestType:
       case successType:
       case failureType:
       case countType:
-        if(typeof schemaKey !== 'string') {
+        if (typeof schemaKey !== 'string') {
           throw new Error('Expected key to be a string.');
         }
         return updatePagination(state, action);

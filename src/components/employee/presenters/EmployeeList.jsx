@@ -26,9 +26,11 @@ const EmployeeList = ({ employees, deleteRow, disabled }) => {
                     </Button>
                   </td>
                   <td>
-                    <Link to={ `${path.EMPLOYEE}/${employee.code}` } disabled={ disabled }>{ employee.code }</Link>
+                    <Link to={ `${path.EMPLOYEE}/${employee.employeeCode}` } disabled={ disabled }>
+                      { employee.employeeCode }
+                    </Link>
                   </td>
-                  <td>{ employee.name }</td>
+                  <td>{ employee.employeeName }</td>
                 </tr>
               );
             }
