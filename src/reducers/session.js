@@ -1,39 +1,46 @@
 import initialState from './initialState';
-import * as SessionAction from '../actions/sessionActions';
+import * as sessionActions from '../actions/sessionActions';
+
+export const TOKEN_NAME = 'token';
+export const REFRESH_TOKEN_NAME = 'refreshToken';
 
 const session = (state = initialState.session, action) => {
   switch (action.type) {
-    case SessionAction.LOGIN_REQUEST:
+    case sessionActions.LOGIN_REQUEST:
       return {
         ...state,
         fetching: true,
       };
 
-    case SessionAction.LOGIN_SUCCESS:
-      localStorage.setItem('token', action.payload.data.token);
-      localStorage.setItem('refreshToken', action.payload.data.refreshToken);
+    case sessionActions.LOGIN_SUCCESS:
+      localStorage.setItem(TOKEN_NAME, action.payload.token);
+      localStorage.setItem(REFRESH_TOKEN_NAME, action.payload.refreshToken);
       return {
         ...state,
         isAuthenticated: true,
         fetching: false
       };
 
-    case SessionAction.LOGIN_FAILURE:
+    case sessionActions.LOGIN_FAILURE:
+      localStorage.removeItem(TOKEN_NAME);
+      localStorage.removeItem(REFRESH_TOKEN_NAME);
       return {
         ...state,
-        error: action.payload.response.data.message
+        isAuthenticated: false,
+        error: action.payload
       };
 
-    case SessionAction.LOGOUT_REQUEST:
+    case sessionActions.LOGOUT_REQUEST:
       return {
         ...state,
         fetching: true
       };
 
-    case SessionAction.LOGOUT_SUCCESS:
+    case sessionActions.LOGOUT_SUCCESS:
       localStorage.clear();
       return {
-        ...state
+        ...state,
+        isAuthenticated: false
       };
 
     default:

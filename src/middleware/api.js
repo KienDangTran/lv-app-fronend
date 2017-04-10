@@ -1,4 +1,7 @@
 import axios from 'axios';
+import { normalize } from 'normalizr';
+import * as httpStatus from '../constants/httpStatus';
+import { LOGIN_FAILURE } from '../actions/sessionActions';
 
 /**
  * Action key that carries API call info interpreted by this Redux middleware.
@@ -15,11 +18,31 @@ export const BASE_URL = 'http://127.0.0.1:8080/api/';
  * @param additionalConfig - https://github.com/mzabriskie/axios#request-config
  * @returns {Promise.<T>|Promise<R>}
  */
-export const callApi = (endpoint, method, additionalConfig) => {
+export const callApi = (endpoint, authenticated = true, additionalConfig = {}) => {
+  let headers = {
+    ...additionalConfig.headers,
+    'X-Requested-With': 'XMLHttpRequest',
+    'Content-Type': 'application/json',
+    'Cache-Control': 'no-cache'
+  };
+
+  if (authenticated) {
+    const token = localStorage.getItem('token') || null;
+    if (token) {
+      headers = {
+        ...headers,
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      };
+    }
+    else {
+      throw 'Authentication Token not found!';
+    }
+  }
+
   return axios({
-    method: method ? method : 'get',
     url: endpoint,
     baseURL: BASE_URL,
+    headers: headers,
     ...additionalConfig
   });
 };
@@ -35,14 +58,8 @@ export default store => next => action => {
     return next(action);
   }
 
-  let {
-    endpoint
-  } = callAPI;
-  const {
-    method,
-    additionalConfig,
-    types
-  } = callAPI;
+  let { endpoint } = callAPI;
+  const { authenticated, additionalConfig, types, schema } = callAPI;
 
   if (typeof endpoint === 'function') {
     endpoint = endpoint(store.getState());
@@ -70,13 +87,30 @@ export default store => next => action => {
     type: requestType
   }));
 
-  return callApi(endpoint, method, additionalConfig)
-    .then(data => next(actionWith({
+  return callApi(endpoint, authenticated, additionalConfig)
+    .then(
+    response => next(actionWith({
       type: successType,
-      payload: data
-    })))
-    .catch(data => next(actionWith({
-      type: failureType,
-      payload: data
-    })));
+      payload: schema ? Object.assign({}, normalize(response.data.result, schema)) : response.data
+    })),
+    error => {
+      if (!error.response) {
+        next(actionWith({
+          type: failureType,
+          payload: { message: error.message }
+        }));
+      } else if (error.response.status === httpStatus.AUTHENTICATION_FAILURE) {
+        next(actionWith({
+          type: LOGIN_FAILURE,
+          payload: error.response.data
+        }));
+      } else {
+        next(actionWith({
+          type: failureType,
+          payload: error.response.data
+        }));
+      }
+    }
+    )
+    .catch(e => { throw e; });
 };

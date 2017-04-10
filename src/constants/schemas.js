@@ -18,7 +18,7 @@ import { schema } from 'normalizr';
 const employee = new schema.Entity(
   'employee',
   {},
-  { idAttribute: employee => employee.code.toUpperCase() }
+  { idAttribute: employee => employee.employeeCode.toUpperCase() }
 );
 
 const user = new schema.Entity(

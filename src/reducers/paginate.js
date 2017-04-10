@@ -47,7 +47,7 @@ const paginate = ({
             pages: {
               ...state.pages,
               [action.pageNo]: {
-                ids: action.payload.data.response
+                ids: action.payload.result
               }
             }
           };
@@ -63,7 +63,7 @@ const paginate = ({
               pageSize: action.pageSize,
               fetching: false,
               [action.pageNo]: {
-                error: action.payload.response.data
+                error: action.payload.result
               }
             }
           };
@@ -73,7 +73,7 @@ const paginate = ({
           const pageSize = state.pageSize;
           return {
             ...state,
-            pageCount: Math.ceil(action.payload.data.response / pageSize)
+            pageCount: Math.ceil(action.payload.result / pageSize)
           };
         }
       default:

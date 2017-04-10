@@ -13,14 +13,9 @@ export const login = (username, password) => {
       [CALL_API]: {
         types: [LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE],
         endpoint: endpoints.LOGIN,
-        method: 'post',
+        authenticated: false,
         additionalConfig: {
-          headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-            'Content-Type': 'application/json',
-            'Cache-Control': 'no-cache'
-          },
-          responseType: 'json',
+          method: 'post',
           data: {
             username,
             password

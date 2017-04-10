@@ -108,7 +108,7 @@ LoginPage.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    error: state.session.error
+    error: state.session.error.message
   };
 };
 

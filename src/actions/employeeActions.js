@@ -33,13 +33,14 @@ export const fetchEmployees = (pageNo, pageSize) => {
         pageSize,
         [CALL_API]: {
           types: [FETCH_EMPLOYEES, FETCH_EMPLOYEES_SUCCESS, FETCH_EMPLOYEES_FAILURE],
-          endpoint: `${endpoint.FETCH_EMPLOYEES}?pageNo=${pageNo}&pageSize=${pageSize}`,
+          schema: schemas.EMPLOYEE_ARRAY,
+          endpoint: endpoint.FETCH_EMPLOYEES,
           additionalConfig: {
-            headers: {
-              'Authorization': `Bearer ${localStorage.getItem('token')}`
+            param: {
+              pageNo: `${pageNo}`,
+              pageSize: `${pageSize}`
             }
-          },
-          schema: schemas.EMPLOYEE_ARRAY
+          }
         }
       });
     }

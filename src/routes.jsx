@@ -29,7 +29,7 @@ function requireAuthentication(nextState, replace) {
   if (!localStorage.getItem('token')) {
     replace(
       {
-        pathname: nav.APP,
+        pathname: nav.LOGIN,
         state: { nextPathname: nextState.location.pathname }
       }
     );
