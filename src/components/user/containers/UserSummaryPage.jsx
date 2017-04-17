@@ -1,7 +1,6 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
 import * as userActions from '../../../actions/userActions';
 import UserList from '../../../components/user/presenters/UserList';
 import {
@@ -16,6 +15,25 @@ import {
 } from 'react-bootstrap';
 
 class UserSummaryPage extends React.Component {
+  static propTypes = {
+    activePage: React.PropTypes.number.isRequired,
+    pageSize: React.PropTypes.number.isRequired,
+    pageCount: React.PropTypes.number.isRequired,
+    fetching: React.PropTypes.bool.isRequired,
+    users: React.PropTypes.array.isRequired,
+    actions: React.PropTypes.shape({
+      countUsers: React.PropTypes.func.isRequired,
+      fetchUsers: React.PropTypes.func.isRequired
+    }).isRequired,
+    location: React.PropTypes.shape({
+      pathname: React.PropTypes.string.isRequired,
+      query: React.PropTypes.object.isRequired
+    }).isRequired,
+    router: React.PropTypes.shape({
+      push: React.PropTypes.func.isRequired
+    }).isRequired
+  }
+
   constructor(props, context) {
     super(props, context);
     this.state = { showModal: false };
@@ -116,31 +134,6 @@ class UserSummaryPage extends React.Component {
   }
 }
 
-UserSummaryPage.propTypes = {
-  activePage: React.PropTypes.number.isRequired,
-  pageSize: React.PropTypes.number.isRequired,
-  pageCount: React.PropTypes.number.isRequired,
-  fetching: React.PropTypes.bool.isRequired,
-  users: React.PropTypes.array.isRequired,
-  actions: React.PropTypes.shape(
-    {
-      countUsers: React.PropTypes.func.isRequired,
-      fetchUsers: React.PropTypes.func.isRequired
-    }
-  ).isRequired,
-  location: React.PropTypes.shape(
-    {
-      pathname: React.PropTypes.string.isRequired,
-      query: React.PropTypes.object.isRequired
-    }
-  ).isRequired,
-  router: React.PropTypes.shape(
-    {
-      push: React.PropTypes.func.isRequired
-    }
-  ).isRequired
-};
-
 const mapStateToProps = (state, ownProps) => {
   const {
     entities: { user },
@@ -171,4 +164,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UserSummaryPage));
+export default connect(mapStateToProps, mapDispatchToProps)(UserSummaryPage);

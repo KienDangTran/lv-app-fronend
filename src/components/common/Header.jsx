@@ -5,6 +5,14 @@ import { Navbar, Nav, NavItem, Glyphicon } from 'react-bootstrap';
 import * as path from '../../constants/navPaths';
 
 class Header extends React.Component {
+  static propTypes = {
+    isAuthenticated: React.PropTypes.bool.isRequired,
+    router: React.PropTypes.shape({
+      push: React.PropTypes.func.isRequired,
+      isActive: React.PropTypes.func.isRequired
+    }).isRequired
+  }
+
   constructor(props, context) {
     super(props, context);
     this.navigate = this.navigate.bind(this);
@@ -77,23 +85,13 @@ class Header extends React.Component {
           <Navbar.Toggle />
         </Navbar.Header>
         <Navbar.Collapse>
-          { this.props.isAuthenticated ? renderMenuItems() : undefined }
-          { this.props.isAuthenticated ? renderUserInfo() : undefined }
+          { this.props.isAuthenticated ? renderMenuItems() : null }
+          { this.props.isAuthenticated ? renderUserInfo() : null }
         </Navbar.Collapse>
       </Navbar>
     );
   }
 }
-
-Header.propTypes = {
-  isAuthenticated: React.PropTypes.bool.isRequired,
-  router: React.PropTypes.shape(
-    {
-      push: React.PropTypes.func.isRequired,
-      isActive: React.PropTypes.func.isRequired
-    }
-  ).isRequired
-};
 
 const mapStateToProps = (state) => {
   return {

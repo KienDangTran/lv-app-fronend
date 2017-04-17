@@ -1,10 +1,39 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Header from './common/Header';
 import { Grid, Row, Col } from 'react-bootstrap';
+import * as nav from '../constants/navPaths';
 
 window.$ = window.jQuery = require('jquery');
 
 class App extends React.Component {
+  static propTypes = {
+    isAuthenticated: React.PropTypes.bool.isRequired,
+    children: React.PropTypes.element,
+    location: React.PropTypes.shape({
+      pathname: React.PropTypes.string.isRequired,
+      query: React.PropTypes.object.isRequired
+    }).isRequired,
+    router: React.PropTypes.shape({
+      push: React.PropTypes.func.isRequired
+    }).isRequired
+  }
+
+  componentDidUpdate(prevProps) {
+    const isLoggingOut = prevProps.isAuthenticated && !this.props.isAuthenticated;
+    const isLoggingIn = !prevProps.isAuthenticated && this.props.isAuthenticated;
+
+    if (isLoggingIn) {
+      this.props.router.push(
+        this.props.location.query.redirectTo !== undefined
+          ? this.props.location.query.redirectTo
+          : nav.APP
+      );
+    } else if (isLoggingOut) {
+      // do any kind of cleanup or post-logout redirection here
+    }
+  }
+
   render() {
     return (
       <div>
@@ -23,8 +52,9 @@ class App extends React.Component {
   }
 }
 
-App.propTypes = {
-  children: React.PropTypes.element
+const mapStateToProps = (state) => {
+  const { session: { isAuthenticated } } = state;
+  return { isAuthenticated };
 };
 
-export default App;
+export default connect(mapStateToProps)(App);

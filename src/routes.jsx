@@ -2,6 +2,8 @@ import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import * as nav from './constants/navPaths';
 import App from './components/App';
+import LoginPage from './components/LoginPage';
+import EnsureLoggedInContainer from './components/EnsureLoggedInContainer';
 import HomePage from './components/HomePage';
 import AboutPage from './components/AboutPage';
 import NotFoundPage from './components/NotFoundPage';
@@ -12,9 +14,10 @@ import UserSummaryPage from './components/user/containers/UserSummaryPage';
 export default (
   <Route path={ nav.APP } component={ App }>
     <IndexRoute component={ HomePage } />
+    <Route path={ nav.LOGIN } component={ LoginPage } />
+    <Route path={ nav.ABOUT } component={ AboutPage } />
 
-    <Route onEnter={ requireAuthentication }>
-      <Route path={ nav.ABOUT } component={ AboutPage } />
+    <Route component={ EnsureLoggedInContainer }>
       <Route path={ nav.EMPLOYEE } component={ EmployeeSummaryPage }>
         <Route path={ nav.EMPLOYEE_DETAILS } component={ EmployeeDetailsPage } />
       </Route>
@@ -25,15 +28,3 @@ export default (
   </Route>
 );
 
-function requireAuthentication(nextState, replace) {
-  if (!localStorage.getItem('token')) {
-    replace(
-      {
-        pathname: nav.LOGIN,
-        state: { nextPathname: nextState.location.pathname }
-      }
-    );
-  } else {
-    replace(null, nav.APP);
-  }
-}

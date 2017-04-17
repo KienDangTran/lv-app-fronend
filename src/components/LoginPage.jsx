@@ -5,6 +5,13 @@ import * as loginActions from '../actions/sessionActions';
 import { PageHeader, FormGroup, ControlLabel, FormControl, Checkbox, Button, Alert } from 'react-bootstrap';
 
 class LoginPage extends React.Component {
+  static propTypes = {
+    error: React.PropTypes.string,
+    actions: React.PropTypes.shape({
+      login: React.PropTypes.func.isRequired
+    }).isRequired
+  }
+
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -96,15 +103,6 @@ class LoginPage extends React.Component {
     );
   }
 }
-
-LoginPage.propTypes = {
-  error: React.PropTypes.string,
-  actions: React.PropTypes.shape(
-    {
-      login: React.PropTypes.func.isRequired
-    }
-  ).isRequired
-};
 
 const mapStateToProps = (state) => {
   return {

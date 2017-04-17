@@ -1,6 +1,5 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
-import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import * as employeeActions from '../../../actions/employeeActions';
 import EmployeeList from '../presenters/EmployeeList';
@@ -16,6 +15,25 @@ import {
 } from 'react-bootstrap';
 
 class EmployeeSummaryPage extends React.Component {
+  static propTypes = {
+    activePage: React.PropTypes.number.isRequired,
+    pageSize: React.PropTypes.number.isRequired,
+    pageCount: React.PropTypes.number.isRequired,
+    fetching: React.PropTypes.bool.isRequired,
+    employees: React.PropTypes.array.isRequired,
+    actions: React.PropTypes.shape({
+      countEmployees: React.PropTypes.func.isRequired,
+      fetchEmployees: React.PropTypes.func.isRequired
+    }).isRequired,
+    location: React.PropTypes.shape({
+      pathname: React.PropTypes.string.isRequired,
+      query: React.PropTypes.object.isRequired
+    }).isRequired,
+    router: React.PropTypes.shape({
+      push: React.PropTypes.func.isRequired
+    }).isRequired
+  }
+
   constructor(props, context) {
     super(props, context);
     this.state = { showModal: false };
@@ -116,31 +134,6 @@ class EmployeeSummaryPage extends React.Component {
   }
 }
 
-EmployeeSummaryPage.propTypes = {
-  activePage: React.PropTypes.number.isRequired,
-  pageSize: React.PropTypes.number.isRequired,
-  pageCount: React.PropTypes.number.isRequired,
-  fetching: React.PropTypes.bool.isRequired,
-  employees: React.PropTypes.array.isRequired,
-  actions: React.PropTypes.shape(
-    {
-      countEmployees: React.PropTypes.func.isRequired,
-      fetchEmployees: React.PropTypes.func.isRequired
-    }
-  ).isRequired,
-  location: React.PropTypes.shape(
-    {
-      pathname: React.PropTypes.string.isRequired,
-      query: React.PropTypes.object.isRequired
-    }
-  ).isRequired,
-  router: React.PropTypes.shape(
-    {
-      push: React.PropTypes.func.isRequired
-    }
-  ).isRequired
-};
-
 const mapStateToProps = (state, ownProps) => {
   const {
     entities: { employee },
@@ -172,4 +165,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EmployeeSummaryPage));
+export default connect(mapStateToProps, mapDispatchToProps)(EmployeeSummaryPage);

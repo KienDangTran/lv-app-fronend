@@ -3,6 +3,10 @@ import { connect } from 'react-redux';
 import LoginPage from './LoginPage';
 
 class HomePage extends React.Component {
+  static propTypes = {
+    isAuthenticated: React.PropTypes.bool.isRequired
+  }
+
   render() {
     return (
       this.props.isAuthenticated
@@ -19,10 +23,6 @@ class HomePage extends React.Component {
     );
   }
 }
-
-HomePage.propTypes = {
-  isAuthenticated: React.PropTypes.bool.isRequired
-};
 
 const mapStateToProps = (state) => {
   return { isAuthenticated: state.session.isAuthenticated };
