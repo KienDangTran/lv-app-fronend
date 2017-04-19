@@ -31,7 +31,7 @@ export const callApi = (endpoint, authenticated = true, additionalConfig = {}) =
     if (token) {
       headers = {
         ...headers,
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
+        'Authorization': `Bearer ${token}`
       };
     }
     else {

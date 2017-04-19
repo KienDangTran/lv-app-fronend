@@ -2,7 +2,8 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as loginActions from '../actions/sessionActions';
-import { PageHeader, FormGroup, ControlLabel, FormControl, Checkbox, Button, Alert } from 'react-bootstrap';
+import { PageHeader, Jumbotron, Checkbox, Button, Alert } from 'react-bootstrap';
+import FieldGroup from './common/FieldGroup';
 
 class LoginPage extends React.Component {
   static propTypes = {
@@ -45,61 +46,55 @@ class LoginPage extends React.Component {
 
   render() {
     return (
-      <div>
-        <div className="jumbotron">
-          <PageHeader>Login</PageHeader>
+      <Jumbotron>
+        <PageHeader>Login</PageHeader>
 
-          <FormGroup controlId="username">
-            <ControlLabel htmlFor="username">Username</ControlLabel>
-            <FormControl
-              type="text"
-              placeholder="Username"
-              name="username"
-              onChange={ this.onUsernameChanged }
-            />
-          </FormGroup>
-
-          <FormGroup controlId="password">
-            <ControlLabel htmlFor="password">Password</ControlLabel>
-            <FormControl
-              type="password"
-              placeholder="Password"
-              name="password"
-              onChange={ this.onPasswordChanged }
-            />
-          </FormGroup>
-
-          <FormGroup controlId="rememberMe">
-            <Checkbox id="rememberMe">
-              Remember me
-          </Checkbox>
-          </FormGroup>
-
-          <Button
-            id="submit"
-            bsStyle="primary"
-            className="pull-left"
-            onClick={ this.onSubmit }
-          >
-            Login
-        </Button>
-
-          <Button
-            id="forgotPassword"
-            bsStyle="link"
-            className="pull-right"
-          >
-            Forgot Password
-          </Button>
-        </div>
         {
           this.props.error
             ? <Alert bsStyle="danger">
-              { this.props.error }
+              {this.props.error}
             </Alert>
             : undefined
         }
-      </div>
+
+        <FieldGroup
+          id="username"
+          label="Username"
+          type="text"
+          placeholder="Username"
+          name="username"
+          onChange={this.onUsernameChanged}
+        />
+
+        <FieldGroup
+          id="password"
+          label="Password"
+          type="password"
+          placeholder="Password"
+          name="password"
+          onChange={this.onPasswordChanged}
+        />
+
+        <Checkbox id="rememberMe"> Remember me </Checkbox>
+
+        <Button
+          id="submit"
+          bsStyle="primary"
+          className="pull-left"
+          onClick={this.onSubmit}
+        >
+          Login
+        </Button>
+
+        <Button
+          id="forgotPassword"
+          bsStyle="link"
+          className="pull-right"
+        >
+          Forgot Password
+        </Button>
+
+      </Jumbotron>
     );
   }
 }
