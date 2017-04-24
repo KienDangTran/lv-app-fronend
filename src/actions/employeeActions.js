@@ -10,9 +10,7 @@ export const FETCH_EMPLOYEES_FAILURE = 'FETCH_EMPLOYEES_FAILURE';
 
 const shouldFetchEmployees = (state, pageNo, pageSize) => {
   const employeePagination = state.pagination[schemas.EMPLOYEE.key];
-  if (employeePagination.fetching) {
-    return false;
-  } else if (!employeePagination) {
+  if (!employeePagination) {
     return true;
   } else if (!employeePagination.pages) {
     return true;

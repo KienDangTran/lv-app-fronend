@@ -32,9 +32,9 @@ export const LOGOUT_FAILURE = 'LOGOUT_FAILURE';
 
 export const logout = () => {
   return dispatch => {
-    dispatch({ types: LOGOUT_REQUEST });
-    dispatch({ types: LOGOUT_SUCCESS });
-    dispatch({ types: LOGOUT_FAILURE });
+    dispatch({ type: LOGOUT_REQUEST });
+    dispatch({ type: LOGOUT_SUCCESS });
+    dispatch({ type: LOGOUT_FAILURE });
   };
 };
 

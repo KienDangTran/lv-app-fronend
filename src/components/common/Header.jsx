@@ -1,12 +1,16 @@
 import React from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { Navbar, Nav, NavItem, Glyphicon } from 'react-bootstrap';
 import * as path from '../../constants/navPaths';
+import * as sessionAction from '../../actions/sessionActions';
 
 class Header extends React.Component {
   static propTypes = {
-    isAuthenticated: React.PropTypes.bool.isRequired,
+    isAuthenticated: React.PropTypes.bool.isRequired, actions: React.PropTypes.shape({
+      logout: React.PropTypes.func.isRequired
+    }).isRequired,
     router: React.PropTypes.shape({
       push: React.PropTypes.func.isRequired,
       isActive: React.PropTypes.func.isRequired
@@ -17,19 +21,28 @@ class Header extends React.Component {
     super(props, context);
     this.navigate = this.navigate.bind(this);
     this.isActive = this.isActive.bind(this);
+    this.logout = this.logout.bind(this);
   }
+
   navigate(href) {
     this.props.router.push(href);
   }
+
   isActive(href, indexOnly = false) {
     return this.props.router.isActive(href, indexOnly);
   }
+
+  logout() {
+    this.props.actions.logout();
+    this.props.router.push(path.APP);
+  }
+
   render() {
     const renderUserInfo = () => {
       return (
         <Nav pullRight>
           <NavItem href="#">Welcome, Admin! <Glyphicon glyph="user" /></NavItem>
-          <NavItem href="#"><Glyphicon glyph="log-out" /></NavItem>
+          <NavItem href="#" onClick={ this.logout }>Logout <Glyphicon glyph="log-out" /></NavItem>
         </Nav>
       );
     };
@@ -99,4 +112,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default withRouter(connect(mapStateToProps)(Header));
+const mapDispatchToProps = (dispatch) => {
+  return {
+    actions: bindActionCreators(sessionAction, dispatch)
+  };
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));
