@@ -8,7 +8,7 @@ window.$ = window.jQuery = require('jquery');
 
 class App extends React.Component {
   static propTypes = {
-    isAuthenticated: React.PropTypes.bool.isRequired,
+    isLoggedIn: React.PropTypes.bool.isRequired,
     children: React.PropTypes.element,
     location: React.PropTypes.shape({
       pathname: React.PropTypes.string.isRequired,
@@ -20,8 +20,8 @@ class App extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const isLoggingOut = prevProps.isAuthenticated && !this.props.isAuthenticated;
-    const isLoggingIn = !prevProps.isAuthenticated && this.props.isAuthenticated;
+    const isLoggingOut = prevProps.isLoggedIn && !this.props.isLoggedIn;
+    const isLoggingIn = !prevProps.isLoggedIn && this.props.isLoggedIn;
 
     if (isLoggingIn) {
       this.props.router.push(
@@ -53,8 +53,8 @@ class App extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const { session: { isAuthenticated } } = state;
-  return { isAuthenticated };
+  const { session: { isLoggedIn } } = state;
+  return { isLoggedIn };
 };
 
 export default connect(mapStateToProps)(App);

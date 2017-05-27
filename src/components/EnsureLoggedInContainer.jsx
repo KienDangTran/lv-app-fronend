@@ -4,7 +4,7 @@ import * as nav from '../constants/navPaths';
 
 class EnsureLoggedInContainer extends React.Component {
   static propTypes = {
-    isAuthenticated: React.PropTypes.bool.isRequired,
+    isLoggedIn: React.PropTypes.bool.isRequired,
     children: React.PropTypes.element,
     location: React.PropTypes.shape({
       pathname: React.PropTypes.string.isRequired,
@@ -16,7 +16,7 @@ class EnsureLoggedInContainer extends React.Component {
   }
 
   componentDidUpdate() {
-    if (!this.props.isAuthenticated) {
+    if (!this.props.isLoggedIn) {
       this.props.router.push({
         pathname: nav.LOGIN,
         query: { redirectTo: this.props.location.pathname + this.props.location.search }
@@ -25,7 +25,7 @@ class EnsureLoggedInContainer extends React.Component {
   }
 
   render() {
-    if (this.props.isAuthenticated) {
+    if (this.props.isLoggedIn) {
       return this.props.children;
     } else {
       return null;
@@ -34,8 +34,8 @@ class EnsureLoggedInContainer extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const { session: { isAuthenticated } } = state;
-  return { isAuthenticated };
+  const { session: { isLoggedIn } } = state;
+  return { isLoggedIn };
 };
 
 export default connect(mapStateToProps)(EnsureLoggedInContainer);

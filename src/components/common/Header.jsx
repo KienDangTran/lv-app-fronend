@@ -8,7 +8,7 @@ import * as sessionAction from '../../actions/sessionActions';
 
 class Header extends React.Component {
   static propTypes = {
-    isAuthenticated: React.PropTypes.bool.isRequired, actions: React.PropTypes.shape({
+    isLoggedIn: React.PropTypes.bool.isRequired, actions: React.PropTypes.shape({
       logout: React.PropTypes.func.isRequired
     }).isRequired,
     router: React.PropTypes.shape({
@@ -98,8 +98,8 @@ class Header extends React.Component {
           <Navbar.Toggle />
         </Navbar.Header>
         <Navbar.Collapse>
-          { this.props.isAuthenticated ? renderMenuItems() : null }
-          { this.props.isAuthenticated ? renderUserInfo() : null }
+          { this.props.isLoggedIn ? renderMenuItems() : null }
+          { this.props.isLoggedIn ? renderUserInfo() : null }
         </Navbar.Collapse>
       </Navbar>
     );
@@ -108,7 +108,7 @@ class Header extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    isAuthenticated: state.session.isAuthenticated
+    isLoggedIn: state.session.isLoggedIn
   };
 };
 

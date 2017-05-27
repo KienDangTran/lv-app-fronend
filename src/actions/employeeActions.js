@@ -1,6 +1,5 @@
-import {
-  CALL_API
-} from '../middleware/api';
+import { CALL_API } from '../middleware/api';
+import * as utils from '../utils/utils';
 import * as endpoint from '../constants/endpoints';
 import schemas from '../constants/schemas';
 
@@ -78,7 +77,7 @@ export const countEmployees = () => {
         endpoint: endpoint.COUNT_EMPLOYEES,
         additionalConfig: {
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
+            'Authorization': `Bearer ${utils.getJwtToken()}`
           }
         }
       }

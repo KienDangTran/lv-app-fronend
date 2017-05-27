@@ -1,6 +1,8 @@
+import * as utils from '../utils/utils';
+
 export default {
   session: {
-    isAuthenticated: !!(localStorage.getItem('token')),
+    isLoggedIn: utils.isLoggedIn(),
     fetching: false,
     error: ''
   },

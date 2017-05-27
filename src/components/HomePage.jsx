@@ -4,12 +4,12 @@ import LoginPage from './LoginPage';
 
 class HomePage extends React.Component {
   static propTypes = {
-    isAuthenticated: React.PropTypes.bool.isRequired
+    isLoggedIn: React.PropTypes.bool.isRequired
   }
 
   render() {
     return (
-      this.props.isAuthenticated
+      this.props.isLoggedIn
         ? <div className="jumbotron">
           <h1>Application</h1>
 
@@ -25,7 +25,7 @@ class HomePage extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  return { isAuthenticated: state.session.isAuthenticated };
+  return { isLoggedIn: state.session.isLoggedIn };
 };
 
 export default connect(mapStateToProps)(HomePage);

@@ -1,8 +1,6 @@
 import initialState from './initialState';
 import * as sessionActions from '../actions/sessionActions';
-
-export const TOKEN_NAME = 'token';
-export const REFRESH_TOKEN_NAME = 'refreshToken';
+import { ACCESS_TOKEN, REFRESH_TOKEN } from '../utils/utils';
 
 const session = (state = initialState.session, action) => {
   switch (action.type) {
@@ -13,20 +11,20 @@ const session = (state = initialState.session, action) => {
       };
 
     case sessionActions.LOGIN_SUCCESS:
-      localStorage.setItem(TOKEN_NAME, action.payload.token);
-      localStorage.setItem(REFRESH_TOKEN_NAME, action.payload.refreshToken);
+      localStorage.setItem(ACCESS_TOKEN, action.payload.token);
+      localStorage.setItem(REFRESH_TOKEN, action.payload.refreshToken);
       return {
         ...state,
-        isAuthenticated: true,
+        isLoggedIn: true,
         fetching: false
       };
 
     case sessionActions.LOGIN_FAILURE:
-      localStorage.removeItem(TOKEN_NAME);
-      localStorage.removeItem(REFRESH_TOKEN_NAME);
+      localStorage.removeItem(ACCESS_TOKEN);
+      localStorage.removeItem(REFRESH_TOKEN);
       return {
         ...state,
-        isAuthenticated: false,
+        isLoggedIn: false,
         error: action.payload
       };
 
@@ -40,7 +38,7 @@ const session = (state = initialState.session, action) => {
       localStorage.clear();
       return {
         ...state,
-        isAuthenticated: false
+        isLoggedIn: false
       };
 
     default:
